@@ -10,10 +10,15 @@ export default function ProductPage() {
     const [product, setProduct] = useState({ id: "0", title: "", price: "", img: "", description: "" })
     const ref1 = useRef<HTMLDivElement>(null)
     const isVisible = useIsVisible(ref1);
+    const ref2 = useRef<HTMLDivElement>(null)
+    const isVisible2 = useIsVisible(ref2);
     const { cart, addToCart, removeFromCart, changeVariation } = useContext(StoreContext)
+    const [selectedSize, setSelectedSize] = useState("L")
 
     useEffect(() => {
         setProduct(products?.filter(item => item.title === title)[0])
+        setSelectedSize(cart.filter((item: ICart) => item.id !== product?.id)[0]?.variation.size)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title])
     
 
@@ -44,8 +49,8 @@ export default function ProductPage() {
                                     <button 
                                         key={size} 
                                         className={`cursor-pointer border border-[#000] md:px-4 px-3 py-[2px] uppercase 
-                                        ${cart.filter((item: ICart) => item.id === product?.id)[0]?.variation?.size === size ? "bg-black text-white" : "border border-gray-500/[0.4]"}`}
-                                        onClick={() => changeVariation("size", product?.id || "", size)}
+                                        ${selectedSize === size ? "bg-black text-white" : "border border-gray-500/[0.4]"}`}
+                                        onClick={() => { changeVariation("size", product?.id || "", size); setSelectedSize(size)}}
                                     >
                                         {size}
                                     </button>
@@ -54,14 +59,14 @@ export default function ProductPage() {
                         </div>
                     </div>
                     
-                    <div className="flex flex-col gap-4 pb-12 w-full">
+                    <div ref={ref2} className="flex flex-col gap-4 pb-12 w-full">
                         {
                             cart.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
-                        <button className="cursor-pointer border border-[#000] p-6 py-4 uppercase" onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { color: "black", size: "L" }}) }>add to cart</button>
+                        <button className={`cursor-pointer border border-[#000] p-6 py-4 uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { color: "black", size: selectedSize }}) }>add to cart</button>
                         :
-                        <button className="cursor-pointer border border-[#000] p-6 py-4 uppercase" onClick={() => removeFromCart(product?.id || "")}>Remove from cart</button>
+                        <button className={`cursor-pointer border border-[#000] p-6 py-4 uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} onClick={() => removeFromCart(product?.id || "")}>Remove from cart</button>
                         }
-                        <button className="cursor-pointer border border-[#C22026] bg-[#C22026] text-white p-6 py-4 uppercase">Buy now</button>
+                        <button className={`cursor-pointer border border-[#C22026] bg-[#C22026] text-white p-6 py-4 uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`}>Buy now</button>
                     </div>
                     
                     <div className="flex flex-col gap-2">
