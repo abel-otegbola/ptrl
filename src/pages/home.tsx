@@ -1,7 +1,14 @@
+import { useRef } from "react";
+import ProductCard from "../components/productCard";
+import { useIsVisible } from "../helpers/isVisible";
+
 export default function HomePage() {
+    const ref2 = useRef<HTMLDivElement>(null)
+    const isVisible = useIsVisible(ref2);
+
     return (
         <main className="">
-            <header className="flex 2xl:h-[60vw] xl:h-[740px] lg:h-[600px] md:h-[520px] h-[480px] w-full bg-cover bg-no-repeat bg-center" style={{ backgroundImage: 'url("/bg.webp")' }}></header>
+            <header ref={ref2} className={`flex 2xl:h-[60vw] xl:h-[740px] lg:h-[600px] md:h-[520px] h-[480px] w-full bg-cover bg-no-repeat bg-center duration-700 ease-in-out ${isVisible ? "scale-100" : "scale-25"}`} style={{ backgroundImage: 'url("/bg.webp")' }}></header>
 
             <section className="md:px-12 px-4 py-12 grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
                 {
@@ -17,11 +24,7 @@ export default function HomePage() {
                         { id: 8, title: "Bag of variety fruits", price: "20,000", img: "/005.png"},
                         { id: 9, title: "Bag of variety fruits", price: "5,000", img: "/003.png"},
                     ].map(product => (
-                        <div key={product.id} className="flex flex-col gap-2 mb-4">
-                            <div className="w-full 2xl:h-[20vw] sm:h-[250px] h-[220px] bg-[#f6f6f4] rounded-lg bg-cover bg-center" style={{ backgroundImage: `url('${product.img}')` }}></div>
-                            <p className="uppercase text-[#989898]">{product.title}</p>
-                            <p className="md:text-[24px] text-[16px] tracking-[1%] ">{product.price} NGN</p>
-                        </div> 
+                        <ProductCard key={product.id} product={product} />
                     ))
                 }
             </section>
