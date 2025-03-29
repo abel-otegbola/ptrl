@@ -1,17 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { products } from "../data/products";
 import { useIsVisible } from "../helpers/isVisible";
+import { StoreContext } from "../context/useStore";
+import { ICart } from "../interface/store";
 
 export default function ProductPage() {
     const { title } = useParams();
-    const [product, setProduct] = useState({ title: "", price: "", img: "", description: "" })
+    const [product, setProduct] = useState({ id: "0", title: "", price: "", img: "", description: "" })
     const ref1 = useRef<HTMLDivElement>(null)
     const isVisible = useIsVisible(ref1);
+    const { cart, addToCart, removeFromCart, changeVariation } = useContext(StoreContext)
 
     useEffect(() => {
         setProduct(products?.filter(item => item.title === title)[0])
     }, [title])
+    
 
     return (
         <div className="grid lg:grid-cols-2 md:px-12 py-12 p-4 gap-12">
@@ -23,13 +27,13 @@ export default function ProductPage() {
             </div>
             
             <div className="flex flex-col gap-6 md:px-[8%]">
-                    <div className="flex justify-between flex-wrap items-start gap-6">
+                    <div className="flex justify-between md:flex-nowrap flex-wrap items-start gap-4">
                         <div>
                             <p className={`uppercase text-[#989898] duration-700 ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-40%]"}`}>{product?.title}</p>
                             <p className={`md:text-[24px] text-[16px] tracking-[1%]  ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-60%]"}`}>{product?.price} NGN</p>
                         </div>
 
-                        <button className="cursor-pointer border border-[#C22026] p-4 py-1 uppercase text-[#C22026]">In-stock</button>
+                        <button className="md:w-[200px] cursor-pointer border border-[#C22026] p-4 py-1 uppercase text-[#C22026]">In-stock</button>
                     </div>
 
                     <div className="flex flex-col gap-2 pb-12">
@@ -37,14 +41,26 @@ export default function ProductPage() {
                         <div className="flex md:gap-6 gap-3">
                             {
                                 ["S", "M", "L", "XL", "XXL"].map(size => (
-                                    <button key={size} className="cursor-pointer border border-[#000] md:p-4 p-3 py-[2px] uppercase">{size}</button>
+                                    <button 
+                                        key={size} 
+                                        className={`cursor-pointer border border-[#000] md:px-4 px-3 py-[2px] uppercase 
+                                        ${cart.filter((item: ICart) => item.id === product?.id)[0]?.variation?.size === size ? "bg-black text-white" : "border border-gray-500/[0.4]"}`}
+                                        onClick={() => changeVariation("size", product?.id || "", size)}
+                                    >
+                                        {size}
+                                    </button>
                                 ))
                             }
                         </div>
                     </div>
                     
                     <div className="flex flex-col gap-4 pb-12 w-full">
-                        <button className="cursor-pointer border border-[#000] p-6 py-4 uppercase">add to cart</button>
+                        {
+                            cart.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
+                        <button className="cursor-pointer border border-[#000] p-6 py-4 uppercase" onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { color: "black", size: "L" }}) }>add to cart</button>
+                        :
+                        <button className="cursor-pointer border border-[#000] p-6 py-4 uppercase" onClick={() => removeFromCart(product?.id || "")}>Remove from cart</button>
+                        }
                         <button className="cursor-pointer border border-[#C22026] bg-[#C22026] text-white p-6 py-4 uppercase">Buy now</button>
                     </div>
                     
