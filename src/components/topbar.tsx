@@ -7,7 +7,7 @@ export default function Topbar() {
                 <Slider />
             </div>
 
-            <div className="grid grid-cols-3 md:px-12 px-4 py-6">
+            <div className="grid grid-cols-3 md:px-12 px-4 md:py-6 py-3">
                 <span></span>
                 <div className="flex justify-center">
                     <img src="/logo.webp" width={150} height={40} alt="cart" />
