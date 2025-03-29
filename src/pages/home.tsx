@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import ProductCard from "../components/productCard";
 import { useIsVisible } from "../helpers/isVisible";
+import { products } from "../data/products";
 
 export default function HomePage() {
     const ref2 = useRef<HTMLDivElement>(null)
@@ -8,22 +9,11 @@ export default function HomePage() {
 
     return (
         <main className="">
-            <header ref={ref2} className={`flex 2xl:h-[60vw] xl:h-[740px] lg:h-[600px] md:h-[520px] h-[480px] w-full bg-cover bg-no-repeat bg-center duration-700 ease-in-out ${isVisible ? "scale-100" : "scale-25"}`} style={{ backgroundImage: 'url("/bg.webp")' }}></header>
+            <header ref={ref2} className={`flex 2xl:h-[60vw] xl:h-[740px] lg:h-[600px] md:h-[520px] h-[480px] w-full bg-cover bg-no-repeat bg-center duration-500 ease-in-out ${isVisible ? "opacity-[1]" : "opacity-[0]"}`} style={{ backgroundImage: 'url("/bg.webp")' }}></header>
 
             <section className="md:px-12 px-4 py-12 grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
                 {
-                    [
-                        { id: 0, title: "Bag of variety fruits", price: "15,000", img: "/001.png"},
-                        { id: 1, title: "Bag of variety fruits", price: "15,000", img: "/002.png"},
-                        { id: 2, title: "Bag of variety fruits", price: "5,000", img: "/003.png"},
-                        { id: 3, title: "Bag of variety fruits", price: "7,000", img: "/004.png"},
-                        { id: 4, title: "Bag of variety fruits", price: "20,000", img: "/005.png"},
-                        { id: 5, title: "Bag of variety fruits", price: "10,000", img: "/002.png"},
-                        { id: 6, title: "Bag of variety fruits", price: "15,000", img: "/001.png"},
-                        { id: 7, title: "Bag of variety fruits", price: "7,000", img: "/004.png"},
-                        { id: 8, title: "Bag of variety fruits", price: "20,000", img: "/005.png"},
-                        { id: 9, title: "Bag of variety fruits", price: "5,000", img: "/003.png"},
-                    ].map(product => (
+                    products.map(product => (
                         <ProductCard key={product.id} product={product} />
                     ))
                 }

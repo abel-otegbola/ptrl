@@ -11,11 +11,11 @@ export default function Footer() {
             <h4 className="font-bold leading-[24px] md:text-[50px] text-[30px]">OUR STORY</h4>
 
             <div ref={ref3} className="flex flex-col gap-4 py-8 uppercase text-[#989898]">
-                <p className={`duration-700 ${isVisible ? "translate-x-[0%]" : "translate-x-[-60%]"}`}>Late nights, big dreams, and an unshakable vision.</p>
-                <p className={`duration-700 delay-150 ${isVisible ? "translate-x-[0%]" : "translate-x-[-60%]"}`}>that&apos;s how we built <span className="text-[#c22026]">ptrl</span> - a lagos-born streetwear brand built for the bold, the relentless, the ones who move different.</p>
-                <p className={`duration-700 delay-300 ${isVisible ? "translate-x-[0%]" : "translate-x-[-60%]"}`}>never follow. never settle. the mision is to redefine style with a mix of performance, culture, and raw energy.</p>
-                <p className={`duration-700 delay-450 ${isVisible ? "translate-x-[0%]" : "translate-x-[-60%]"}`}>if you came for the hpye, you&apos;ll stay for the quality</p>
-                <p className={`duration-700 delay-600 ${isVisible ? "translate-x-[0%]" : "translate-x-[-60%]"}`}>We don&apos;t just make clothes. we make statements</p>
+                <p className={`duration-700 ${isVisible ? "opacity-[1] translate-y-[0%]" : "opacity-[0] translate-y-[-60%]"}`}>Late nights, big dreams, and an unshakable vision.</p>
+                <p className={`duration-700 delay-150 ${isVisible ? "opacity-[1] translate-y-[0%]" : "opacity-[0] translate-y-[-60%]"}`}>that&apos;s how we built <span className="text-[#c22026]">ptrl</span> - a lagos-born streetwear brand built for the bold, the relentless, the ones who move different.</p>
+                <p className={`duration-700 delay-300 ${isVisible ? "opacity-[1] translate-y-[0%]" : "opacity-[0] translate-y-[-60%]"}`}>never follow. never settle. the mision is to redefine style with a mix of performance, culture, and raw energy.</p>
+                <p className={`duration-700 delay-450 ${isVisible ? "opacity-[1] translate-y-[0%]" : "opacity-[0] translate-y-[-60%]"}`}>if you came for the hype, you&apos;ll stay for the quality</p>
+                <p className={`duration-700 delay-600 ${isVisible ? "opacity-[1] translate-y-[0%]" : "opacity-[0] translate-y-[-60%]"}`}>We don&apos;t just make clothes. we make statements</p>
             </div>
 
             <div className="flex flex-col gap-4">
