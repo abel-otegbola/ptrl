@@ -3,7 +3,7 @@ import Slider from "./slider";
 export default function Topbar() {
     return (
         <div className="overflow-hidden">
-            <div className="flex gap-8 bg-[#C22026] p-4 overflow-hidden text-white uppercase w-full">
+            <div className="flex gap-8 bg-[#C22026] leading-[100%] p-4 overflow-hidden text-white uppercase w-full">
                 <Slider />
             </div>
 
