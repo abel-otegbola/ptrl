@@ -1,16 +1,17 @@
 import { useRef } from "react";
 import { useIsVisible } from "../helpers/isVisible";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
     const ref3 = useRef<HTMLDivElement>(null)
     const isVisible = useIsVisible(ref3);
 
     return (
-        <footer className="flex flex-col items-center text-center gap-8 md:px-12 px-4 py-20">
+        <footer className="flex flex-col gap-8 md:px-12 px-4 py-20 bg-[#F4F4F2] text-[#989898]">
 
-            <h4 className="font-bold leading-[24px] md:text-[50px] text-[30px]">OUR STORY</h4>
+            <h4 className="font-black leading-[24px] md:text-[50px] text-[30px] py-4 text-black">OUR STORY</h4>
 
-            <div ref={ref3} className="flex flex-col gap-4 py-8 uppercase text-[#989898]">
+            <div ref={ref3} className="flex flex-col gap-6 py-8 uppercase">
                 <p className={`duration-700 ${isVisible ? "opacity-[1]" : "opacity-[0]"}`}>Late nights, big dreams, and an unshakable vision.</p>
                 <p className={`duration-700 delay-50 ${isVisible ? "opacity-[1]" : "opacity-[0]"}`}>that&apos;s how we built <span className="text-[#c22026]">ptrl</span> - a lagos-born streetwear brand built for the bold, the relentless, the ones who move different.</p>
                 <p className={`duration-700 delay-50 ${isVisible ? "opacity-[1]" : "opacity-[0]"}`}>never follow. never settle. the mision is to redefine style with a mix of performance, culture, and raw energy.</p>
@@ -19,10 +20,11 @@ export default function Footer() {
             </div>
 
             <div className="flex flex-col gap-4">
-                <p className="text-[#000]">&copy; {new Date().getFullYear()}, PTRL</p>
-                <div className="flex items-center gap-6 text-[#C22026] uppercase">
-                    <p>[Whatsapp]</p>
-                    <p>[Instagram]</p>
+                <img src="/logo.png" width={150} height={40} alt="logo" className="-ml-4 mt-8" />
+                <p className="uppercase">Follow us</p>
+                <div className="flex items-center gap-4 text-[#C22026] uppercase">
+                    <Link to={"https://instagram.com"}><img src="/instagram.png" width={30} height={30} alt="instagram"  /></Link>
+                    <Link to={"https://whatsapp.com"}><img src="/whatsapp.png" width={30} height={30} alt="whatsapp"  /></Link>
                 </div>
             </div>
 

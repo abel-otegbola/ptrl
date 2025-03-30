@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Slider from "./slider";
 
 export default function Topbar() {
@@ -7,10 +8,9 @@ export default function Topbar() {
                 <Slider />
             </div>
 
-            <div className="grid grid-cols-3 md:px-12 px-4 md:py-6 py-3">
-                <span></span>
+            <div className="grid grid-cols-3 md:px-12 px-4 md:py-3 py-3">
+                <Link to={"/"}><img src="/logo.png" width={170} height={40} alt="cart" /></Link>
                 <div className="flex justify-center">
-                    <img src="/logo.webp" width={170} height={40} alt="cart" />
                 </div>
                 <div className="flex justify-end">
                     <button>

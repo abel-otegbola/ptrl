@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
       <StoreContextProvider>
-      <div className='2xl:text-[32px] md:text-[24px] text-[16px] md:leading-[36px] leading-[24px] tracking-[1%] '>
+      <div className='2xl:text-[24px] md:text-[18px] text-[16px] md:leading-[36px] leading-[24px] tracking-[1%] '>
         <Topbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
