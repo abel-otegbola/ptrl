@@ -17,7 +17,7 @@ export default function ProductPage() {
     const [selectedSize, setSelectedSize] = useState("L")
 
     useEffect(() => {
-        setProduct(products?.filter(item => item.title === title)[0])
+        setProduct(products?.filter(item => item.id === title)[0])
         setSelectedSize(cart.filter((item: ICart) => item.id !== product?.id)[0]?.variation.size)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title])
