@@ -8,7 +8,7 @@ export default function Slider() {
                 ul.nextSibling.setAttribute('aria-hidden', 'true');
             })"
             // [mask-image:_linear-gradient(to_right,transparent_0,_black_40px,_black_calc(100%-40px),transparent_100%)]
-            className="w-full inline-flex flex-nowrap overflow-hidden "
+            className="w-full gap-4 inline-flex flex-nowrap overflow-hidden "
         >
             <ul x-ref="logos" className="flex items-center sm:text-[16px] text-[14px] justify-center gap-4 md:justify-start sm:[&_li]:w-[244px] sm:[&_li]:mr-2 [&_li]:w-[220px] [&_img]:max-w-none animate-infinite-scroll">
                 <li>
@@ -32,7 +32,30 @@ export default function Slider() {
                 <li>
                     <p>Performance MEETS style</p>
                 </li>
-            </ul>                
+            </ul>     
+            <ul x-ref="logos" className="flex items-center sm:text-[16px] text-[14px] justify-center gap-4 md:justify-start sm:[&_li]:w-[244px] sm:[&_li]:mr-2 [&_li]:w-[220px] [&_img]:max-w-none animate-infinite-scroll">
+                <li>
+                    <p>Performance MEETS style</p>
+                </li>
+                <li>
+                    <p>Performance MEETS style</p>
+                </li>
+                <li>
+                    <p>Performance MEETS style</p>
+                </li>
+                <li>
+                    <p>Performance MEETS style</p>
+                </li>
+                <li>
+                    <p>Performance MEETS style</p>
+                </li>
+                <li>
+                    <p>Performance MEETS style</p>
+                </li>
+                <li>
+                    <p>Performance MEETS style</p>
+                </li>
+            </ul>               
         </div>
     )
 }
