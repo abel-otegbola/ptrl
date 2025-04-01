@@ -22,11 +22,11 @@ export default function Input({ className, disabled, label, name, value, type, o
             
             <div className="flex justify-between gap-4">
                 { label ? <label htmlFor={name} className={`text-[14px] font-bold ${focus ? "text-primary" : ""}`}>{label}</label> : "" }
-                { error && !focus ? <p className="px-2 text-[12px] italic text-red-500 backdrop-blur-sm">{error}</p> : "" }
+                { error && !focus ? <p className="px-2 text-[12px] italic text-[#C22026] backdrop-blur-sm">{error}</p> : "" }
             </div>
 
             <div className={`flex items-center gap-1 relative rounded-lg w-full border p-1 px-1 duration-500 
-                ${error && !focus ? "border-red-500 text-red-500 " : "border-[#E4E4E4]"}
+                ${error && !focus ? "border-[#C22026] text-[#C22026] " : "border-[#E4E4E4]"}
                 ${focus ? "border-black shadow-input-active" : ""}
                 ${className}
             `}>
