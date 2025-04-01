@@ -13,7 +13,7 @@ export default function ProductPage() {
     const isVisible = useIsVisible(ref1);
     const ref2 = useRef<HTMLDivElement>(null)
     const isVisible2 = useIsVisible(ref2);
-    const { cart, addToCart, removeFromCart, changeVariation } = useContext(StoreContext)
+    const { cart, addToCart,changeQuantity, removeFromCart, changeVariation } = useContext(StoreContext)
     const [selectedSize, setSelectedSize] = useState("L")
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function ProductPage() {
 
     return (
         <main>
-            <div className="grid lg:grid-cols-2 md:px-12 py-12 p-4 gap-12">
+            <div className="grid lg:grid-cols-2 md:px-12 md:py-12 p-4 gap-12">
                 <div className="xl:px-[10%] lg:px-[8%]">
                     <div ref={ref1} className={`w-full lg:h-full h-[450px] pb-12 bg-[#f6f6f4] rounded-lg bg-cover bg-center duration-700 ease-in-out 
                         ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[10%]"}`} 
@@ -34,13 +34,13 @@ export default function ProductPage() {
                 </div>
                 
                 <div className="flex flex-col gap-6 md:px-[8%]">
-                        <div className="flex justify-between md:flex-nowrap flex-wrap items-start gap-4">
-                            <div className="flex flex-col gap-1">
-                                <p className={`uppercase text-[#989898] duration-700 ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-40%]"}`}>{product?.title}</p>
-                                <p className={`md:text-[24px] text-[16px] tracking-[1%]  ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-60%]"}`}>{product?.price} NGN</p>
+                        <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-3 md:text-[16px] text-[14px]">
+                                <p className={`uppercase font-bold duration-700 ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-40%]"}`}>{product?.title}</p>
+                                <p className={`font-medium ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-60%]"}`}>₦{product?.price}</p>
                             </div>
+                            <p className="uppercase text-[#989898]">all items in stock</p>
 
-                            <button className="md:w-[124px] cursor-pointer border border-[#C22026] p-2 py-1 uppercase text-[#C22026] leading-[24px]">In-stock</button>
                         </div>
 
                         <div className="flex flex-col gap-2 pb-12">
@@ -61,18 +61,24 @@ export default function ProductPage() {
                             </div>
                         </div>
                         
-                        <div ref={ref2} className="flex flex-col gap-4 pb-12 w-full">
+                        <div ref={ref2} className="flex flex-col gap-4 pb-2 w-full">
                             {
                                 cart.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
-                            <button className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { color: "black", size: selectedSize }}) }>add to cart</button>
+                            <button className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { color: "black", size: selectedSize }}) }>add to cart</button>
                             :
-                            <button className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} onClick={() => removeFromCart(product?.id || "")}>Remove from cart</button>
+                            <div className="flex justify-between text-[20px] items-center gap-1">
+                                <button className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg p-[12px]" onClick={() => changeQuantity(product?.id || "", "ADD")}>+</button>
+                                <input className="w-[40px] py-2 text-center" type="number" value={cart.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString()} onChange={(e) => changeQuantity(product?.id, +e.target.value)} />
+                                <button className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg p-[12px]" onClick={() =>  
+                                    cart.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString() === "1" 
+                                    ? removeFromCart(product?.id) : changeQuantity(product?.id || "", "MINUS")
+                                }>-</button>
+                            </div> 
                             }
-                            <button className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`}>Buy now</button>
+                            <button className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`}>Buy now</button>
                         </div>
                         
-                        <div className="flex flex-col gap-2">
-                            <p className="uppercase text-[#989898]">product information</p>
+                        <div className="flex flex-col gap-2 text-black leading-[36px]">
                             <div className="" dangerouslySetInnerHTML={{ __html: product?.description }}></div>
                         </div>
                 </div>
@@ -80,7 +86,7 @@ export default function ProductPage() {
             </div>
 
             <section className="md:p-12 p-4 py-12">
-                <h4 className="uppercase font-bold py-4">You may also like</h4>
+                <h4 className="font-bold py-4 md:text-[20px] text-[16px]">You may also like</h4>
                 <section className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 md:gap-6 gap-4">
                     {
                         products.slice(0,5).map(product => (

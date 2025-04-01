@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <ScrollToTop>
       <StoreContextProvider>
-      <div className='md:text-[18px] text-[14px] md:leading-[36px] leading-[24px] tracking-[1%] '>
+      <div className='md:text-[14px] text-[12px] md:leading-[20px] leading-[16px] tracking-[1.6%] '>
         <Topbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
