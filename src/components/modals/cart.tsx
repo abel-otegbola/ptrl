@@ -31,7 +31,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
     return (
         <div ref={cartRef} className={`bg-white md:w-[500px] h-[100%] -translate-y-16 mb-12 sm:w-[400px] w-[85%] overflow-y-auto flex flex-col gap-6 px-6 pb-6 pt-2 duration-700 ${animate ? "translate-x-0" : "translate-x-[150%]"}`}>
             <div className="flex justify-end">
-                <button className="p-4 cursor-pointer" onClick={() => setOpen(false)}>
+                <button className="py-4 cursor-pointer" onClick={() => setOpen(false)}>
                     <img src="/close.svg" width={30} height={30} alt="close" />
                 </button>
             </div>
