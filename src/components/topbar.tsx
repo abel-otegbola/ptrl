@@ -20,12 +20,12 @@ export default function Topbar() {
                 <div className="flex justify-center">
                 </div>
                 <div className="flex justify-end">
-                    <button className="relative cursor-pointer" onClick={() => setOpen(!open)}>
+                    <button className="relative cursor-pointer" onClick={(e) => {setOpen(!open); e.stopPropagation()}}>
                         <img src="/cart.svg" width={32} height={32} alt="cart" />
                         <span className="absolute top-3 -right-1 bg-[#c22026] text-white rounded-full text-[10px] px-[6px]">{cart.length}</span>
                     </button>
                 </div>
-                <div className={`absolute justify-end fixed top-[110px] left-0 bg-black/[0.5] w-full h-full z-[2] duration-500 ${open ? "flex" : "hidden"}`}>
+                <div className={`absolute justify-end fixed top-[110px] left-0 bg-black/[0.5] w-full h-[100%] z-[2] duration-500 ${open ? "flex" : "hidden"}`}>
                     <Cart open={open} setOpen={setOpen} />
                 </div>
             </div>

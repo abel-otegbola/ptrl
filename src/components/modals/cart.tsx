@@ -6,6 +6,9 @@ import CartCard from "../cartCard";
 import { useOutsideClick } from "../../helpers/isClickOutside";
 import { currencyFormatter } from "../../helpers/currencyFormatter";
 import { totalPrice } from "../../helpers/totalPrice";
+import Input from "../input";
+import { Formik } from "formik";
+import { orderSchema } from "../../schema/storeSchema";
 
 export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0: boolean) => void }) {
     const { cart } = useContext(StoreContext)
@@ -26,8 +29,8 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
     }, [open])
 
     return (
-        <div ref={cartRef} className={`bg-white md:w-[500px] sm:w-[400px] w-[85%] overflow-y-auto flex flex-col gap-6 md:p-6 p-3 duration-700 ${animate ? "translate-x-0" : "translate-x-[150%]"}`}>
-            <h4>Order Summary</h4>
+        <div ref={cartRef} className={`bg-white md:w-[500px] h-[100%] mb-12 sm:w-[400px] w-[85%] overflow-y-auto flex flex-col gap-6 md:p-6 p-3 duration-700 ${animate ? "translate-x-0" : "translate-x-[150%]"}`}>
+            <h4 className="md:text-[20px] text-[18px]">Order Summary</h4>
             <div className="flex flex-col gap-2">
             {   
                 cart.length === 0 ?
@@ -41,7 +44,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                 ))
             }
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 py-4">
                 <div className="flex justify-between">
                     <p>Subtotal</p>
                     <p>{currencyFormatter(totalPrice(cart))}</p>
@@ -51,10 +54,41 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     <p>{currencyFormatter(cart.length > 0 ? 5000 : 0)}</p>
                 </div>
                 <div className="flex justify-between">
-                    <p className="font-bold">Total</p>
-                    <p>{currencyFormatter(+totalPrice(cart) + cart.length > 0 ? 5000 : 0)}</p>
+                    <p className="font-bold md:text-[22px] text-[18px]">Total</p>
+                    <p>{currencyFormatter(+totalPrice(cart) + (cart.length > 0 ? 5000 : 0))}</p>
                 </div>
             </div>
+
+            <h4 className="md:text-[20px] text-[18px] mt-4">Shipping Details</h4> 
+                <Formik
+                    initialValues={{ fullname: '', email: '', phoneNumber: '', address: '', state: '', city: '' }}
+                    validationSchema={orderSchema}
+                    validateOnBlur={true}
+                    onSubmit={( values, { setSubmitting }) => {
+                        console.log(values)
+                        setSubmitting(false);
+                    }}
+                    >
+                    {({
+                        values,
+                        errors,
+                        touched,
+                        handleChange,
+                        handleSubmit,
+                        isSubmitting,
+                    }) => (
+
+                        <form onSubmit={handleSubmit} className="flex flex-col w-full gap-5 mb-20">
+                            <Input placeholder="Full name" label="Full name" name="fullname" value={values.fullname} onChange={handleChange} type="text" error={touched.fullname ? errors.fullname : ""}  />
+                            <Input placeholder="Email Address" label="Email Address" name="email" value={values.email} onChange={handleChange} type="email" error={touched.email ? errors.email : ""}  />
+                            <Input placeholder="Phone Number" label="Phone Number" name="phoneNumber" value={values.phoneNumber} onChange={handleChange} type="text" error={touched.phoneNumber ? errors.phoneNumber : ""}  />
+                            <Input placeholder="Delivery Address" label="Delivery Address" name="address" value={values.address} onChange={handleChange} type="text" error={touched.address ? errors.address : ""}  />
+                            <Input placeholder="State" label="State" name="state" value={values.state} onChange={handleChange} type="text" error={touched.state ? errors.state : ""}  />
+                            <Input placeholder="City" label="City" name="city" value={values.city} onChange={handleChange} type="text" error={touched.city ? errors.city : ""}  />
+                            <button type="submit" className="w-full cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg mb-20">{ isSubmitting ? "" : "Proceed to Paystack"}</button>
+                        </form>
+                        )}
+                </Formik>
         </div>
     )
 }
