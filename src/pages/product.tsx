@@ -5,6 +5,7 @@ import { useIsVisible } from "../helpers/isVisible";
 import { StoreContext } from "../context/useStore";
 import { ICart } from "../interface/store";
 import ProductCard from "../components/productCard";
+import { currencyFormatter } from "../helpers/currencyFormatter";
 
 export default function ProductPage() {
     const { title } = useParams();
@@ -37,7 +38,7 @@ export default function ProductPage() {
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-3 md:text-[16px] text-[14px]">
                                 <p className={`uppercase font-bold duration-700 ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-40%]"}`}>{product?.title}</p>
-                                <p className={`font-medium ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-60%]"}`}>₦{product?.price}</p>
+                                <p className={`font-medium ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-60%]"}`}>{currencyFormatter(product?.price)}</p>
                             </div>
                             <p className="uppercase text-[#989898]">all items in stock</p>
 
@@ -69,7 +70,7 @@ export default function ProductPage() {
                             <div className="flex justify-between text-[20px] items-center gap-1">
                                 <button className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg p-[12px]" onClick={() => changeQuantity(product?.id || "", "ADD")}>+</button>
                                 <input className="w-[40px] py-2 text-center" type="number" value={cart.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString()} onChange={(e) => changeQuantity(product?.id, +e.target.value)} />
-                                <button className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg p-[12px]" onClick={() =>  
+                                <button className="h-[50px] w-[100px] text-[20px] border border-black cursor-pointer rounded-lg p-[12px]" onClick={() =>  
                                     cart.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString() === "1" 
                                     ? removeFromCart(product?.id) : changeQuantity(product?.id || "", "MINUS")
                                 }>-</button>
