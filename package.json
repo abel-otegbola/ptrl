@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@phosphor-icons/react": "^2.1.7",
     "@tailwindcss/vite": "^4.0.17",
     "compression": "^1.8.0",
     "formik": "^2.4.6",
