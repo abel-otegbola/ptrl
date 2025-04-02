@@ -9,7 +9,7 @@ export default function CartCard({ product }: { product: { id: string, title: st
 
     return (
         <div className="overflow-hidden w-full">
-            <div key={product?.id} className={`relative flex items-center w-[108%] h-full gap-2 duration-500 ${actions ? "translate-x-[-8%]" : "translate-x-[0%]"}`} onDrag={() => setActions(true)} onMouseOver={() => setActions(true)} onMouseOut={() => setActions(false)}>
+            <div key={product?.id} className={`relative flex items-center w-[108%] h-full gap-2 duration-500 ${actions ? "translate-x-[-8%]" : "translate-x-[0%]"}`} onClick={() => setActions(true)} onMouseOver={() => setActions(true)} onMouseOut={() => setActions(false)}>
                 <a href={`/product/${product?.id}`}>
                     <img src={product?.img} alt={product?.title} width={80} height={100} className="rounded h-full min-w-[80px]" />
                 </a>
