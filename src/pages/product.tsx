@@ -51,7 +51,7 @@ export default function ProductPage() {
                                     ["S", "M", "L", "XL", "XXL"].map(size => (
                                         <button 
                                             key={size} 
-                                            className={`cursor-pointer border border-black md:px-4 px-3 py-[2px] uppercase leading-[24px] hover:bg-black hover:text-white
+                                            className={`cursor-pointer border border-black md:px-4 px-3 py-[4px] uppercase leading-[24px] hover:bg-black hover:text-white
                                             ${selectedSize === size ? "bg-black text-white" : "border black"}`}
                                             onClick={() => { changeVariation("size", product?.id || "", size); setSelectedSize(size)}}
                                         >
@@ -88,9 +88,9 @@ export default function ProductPage() {
 
             <section className="md:p-12 p-4 py-12">
                 <h4 className="font-bold py-4 md:text-[20px] text-[16px]">You may also like</h4>
-                <section className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 md:gap-6 gap-4">
+                <section className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 md:gap-6 gap-4">
                     {
-                        products.slice(0,5).map(product => (
+                        products.slice(0,4).map(product => (
                             <ProductCard key={product.id} product={product} />
                         ))
                     }
