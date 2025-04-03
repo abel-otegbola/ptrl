@@ -24,9 +24,9 @@ export default function Footer() {
             <div className="flex flex-col gap-4 sm:items-center">
                 <img src="/logo.png" width={90} height={60} alt="logo" className=" mt-8" />
                 <p className="uppercase">Follow us</p>
-                <div className="flex items-center gap-4 text-[#C22026] uppercase -ml-4">
-                    <Link to={"https://instagram.com"}><img src="/instagram.svg" width={30} height={30} alt="instagram"  /></Link>
-                    <Link to={"https://whatsapp.com"}><img src="/whatsapp.svg" width={30} height={30} alt="whatsapp"  /></Link>
+                <div className="flex items-center md:gap-8 gap-4 text-[#C22026] uppercase">
+                    <Link to={"https://instagram.com"} className=""><img src="/instagram.svg" width={25} height={25} alt="instagram"  /></Link>
+                    <Link to={"https://whatsapp.com"} className=""><img src="/whatsapp.svg" width={25} height={25} alt="whatsapp"  /></Link>
                 </div>
             </div>
 
