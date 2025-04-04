@@ -7,7 +7,7 @@ export default function Footer() {
     const isVisible = useIsVisible(ref3);
 
     return (
-        <footer className="grid sm:grid-cols-2 gap-8 md:px-12 px-4 py-20 bg-[#F4F4F2] text-[#989898]">
+        <footer className="grid sm:grid-cols-2 gap-8 md:px-12 tracking-[0] px-4 py-20 bg-[#F4F4F2] text-[#989898]">
 
             <div className="flex flex-col gap-6">
                 <h4 className="font-bold leading-[24px] md:text-[24px] text-[20px] py-2 text-black uppercase">Mission</h4>
@@ -22,7 +22,7 @@ export default function Footer() {
             </div>
 
             <div className="flex flex-col gap-4 sm:items-center">
-                <img src="/logo.png" width={90} height={60} alt="logo" className=" mt-8" />
+                <img src="/logo.png" width={90} height={60} alt="logo" className="" />
                 <p className="uppercase">Follow us</p>
                 <div className="flex items-center md:gap-8 gap-4 text-[#C22026] uppercase">
                     <Link to={"https://www.instagram.com/ptrlstudios"} className=""><img src="/instagram.svg" width={25} height={25} alt="instagram"  /></Link>
