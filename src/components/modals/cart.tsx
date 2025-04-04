@@ -76,7 +76,6 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     onSubmit={( values, { setSubmitting }) => {
                         axios.post(`${API_BASE_URL}/initialize`, {email: values.email, amount: ((+totalPrice(cart) + 5000) * 100).toString()})
                         .then(response => {
-                            console.log(response)
                             popup.resumeTransaction(response?.data?.data?.access_code)
                         })
                         .catch(error => console.log(error))

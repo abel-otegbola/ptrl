@@ -5,6 +5,7 @@ import Footer from './components/footer';
 import ProductPage from './pages/product';
 import StoreContextProvider from './context/useStore';
 import ScrollToTop from './components/scrollToTop';
+import OrdersPage from './pages/orders';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/product/:title" element={<ProductPage />} />
+          <Route path="/orders/:reference" element={<OrdersPage />} />
         </Routes>
         <Footer />
       </div>
