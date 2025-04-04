@@ -12,7 +12,7 @@ export default function Footer() {
             <div className="flex flex-col gap-6">
                 <h4 className="font-bold leading-[24px] md:text-[22px] text-[16px] py-2 text-black uppercase">Our Story</h4>
 
-                <div ref={ref3} className="flex flex-col gap-6 py-2 md:text-[16px] text-[14px]">
+                <div ref={ref3} className="flex flex-col gap-6 py-2 md:text-[16px] text-[14px] text-[#989898]">
                     <p className={`duration-700 ${isVisible ? "opacity-[1]" : "opacity-[0]"}`}>Late nights, big dreams, and an unshakable vision.</p>
                     <p className={`duration-700 delay-50 ${isVisible ? "opacity-[1]" : "opacity-[0]"}`}>That&apos;s how we built <span className="text-[#c22026]">PTRL</span> - a Lagos-born streetwear brand for the relentless and the ones who move differently.</p>
                     <p className={`duration-700 delay-50 ${isVisible ? "opacity-[1]" : "opacity-[0]"}`}>Never follow. never settle. the mission is to redefine style with a mix of performance, culture, and raw energy.</p>
