@@ -77,6 +77,28 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                         axios.post(`${API_BASE_URL}/initialize`, {email: values.email, amount: ((+totalPrice(cart) + 5000) * 100).toString()})
                         .then(response => {
                             popup.resumeTransaction(response?.data?.data?.access_code)
+                            popup.checkout({
+                                key: import.meta.env.PAYSTACK_PUBLIC_KEY,
+                                email: values.email,
+                                amount: (+totalPrice(cart) + 5000) * 100,
+                                reference: response?.data?.data?.reference,
+                                onCancel: () => {
+                                  console.log('Popup closed without payment');
+                                },
+                                onSuccess: (response) => {
+                                  console.log('Payment completed. Reference:', response.reference);
+                                  
+                                  // Now verify the payment
+                                  axios.get(`${API_BASE_URL}/verify/${response.reference}`)
+                                    .then(verification => {
+                                      console.log('Verified transaction:', verification.data);
+                                      // The actual transaction ID is in verification.data.data.id
+                                      const transactionId = verification.data.data.id;
+                                      console.log('Transaction ID:', transactionId);
+                                    });
+                                }
+                            });
+                        
                         })
                         .catch(error => console.log(error))
 
