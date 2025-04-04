@@ -9,10 +9,13 @@ import { totalPrice } from "../../helpers/totalPrice";
 import Input from "../input";
 import { Formik } from "formik";
 import { orderSchema } from "../../schema/storeSchema";
+import axios from "axios";
+import PaystackPop from '@paystack/inline-js'
 
 export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0: boolean) => void }) {
     const { cart } = useContext(StoreContext)
     const [animate, setAnimate] = useState(false)
+    const popup = new PaystackPop()
 
     const cartRef = useOutsideClick(setOpen, false)
 
@@ -70,7 +73,15 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     validationSchema={orderSchema}
                     validateOnBlur={true}
                     onSubmit={( values, { setSubmitting }) => {
-                        console.log(values)
+                        axios.post("http://localhost:3000/initialize", {email: values.email, amount: ((+totalPrice(cart) + 5000) * 100).toString()})
+                        .then(response => {
+                            popup.resumeTransaction(response?.data?.access_code)
+                        })
+                        .catch(error => console.log(error))
+
+                        // axios.post("http://localhost:3000/order", {...values, order_items: cart})
+                        // .then(response => console.log(response))
+                        // .catch(error => console.log(error))
                         setSubmitting(false);
                     }}
                     >
