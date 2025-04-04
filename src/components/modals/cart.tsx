@@ -78,7 +78,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                         .then(response => {
                             popup.resumeTransaction(response?.data?.data?.access_code)
                             popup.checkout({
-                                key: import.meta.env.PAYSTACK_PUBLIC_KEY,
+                                key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
                                 email: values.email,
                                 amount: (+totalPrice(cart) + 5000) * 100,
                                 reference: response?.data?.data?.reference,
