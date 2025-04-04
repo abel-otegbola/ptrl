@@ -11,6 +11,7 @@ import { Formik } from "formik";
 import { orderSchema } from "../../schema/storeSchema";
 import axios from "axios";
 import PaystackPop from '@paystack/inline-js'
+import { API_BASE_URL } from "../../helpers/config";
 
 export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0: boolean) => void }) {
     const { cart } = useContext(StoreContext)
@@ -73,9 +74,10 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     validationSchema={orderSchema}
                     validateOnBlur={true}
                     onSubmit={( values, { setSubmitting }) => {
-                        axios.post("http://localhost:3000/initialize", {email: values.email, amount: ((+totalPrice(cart) + 5000) * 100).toString()})
+                        axios.post(`${API_BASE_URL}/initialize`, {email: values.email, amount: ((+totalPrice(cart) + 5000) * 100).toString()})
                         .then(response => {
-                            popup.resumeTransaction(response?.data?.access_code)
+                            console.log(response)
+                            popup.resumeTransaction(response?.data?.data?.access_code)
                         })
                         .catch(error => console.log(error))
 
