@@ -23,7 +23,7 @@ export default function Topbar() {
                     </button>
                 </div>
             </div>
-                <div className={`absolute justify-end fixed top-[110px] left-0 bg-black/[0.5] w-full h-[100%] z-[2] duration-500 ${openCart ? "flex" : "hidden"}`}>
+                <div className={`absolute justify-end fixed top-[100px] left-0 bg-black/[0.5] w-full h-[100%] z-[2] duration-500 ${openCart ? "flex" : "hidden"}`}>
                     <Cart open={openCart} setOpen={setOpenCart} />
                 </div>
             
