@@ -13,6 +13,7 @@ import { orderSchema } from "../../schema/storeSchema";
 import axios from "axios";
 import PaystackPop from '@paystack/inline-js'
 import { API_BASE_URL } from "../../helpers/config";
+import emailjs from "@emailjs/browser";
 
 export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0: boolean) => void }) {
     const { cart } = useContext(StoreContext)
@@ -20,6 +21,51 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
     const popup = new PaystackPop()
 
     const cartRef = useOutsideClick(setOpen, false)
+
+    useEffect(() => {
+        emailjs.init(import.meta.env.VITE_EMAIL_PRIVATE_KEY); // Get from Email.js dashboard
+    }, []);
+    
+        const sendOrderEmail = async (
+            values: { fullname: string; email: string; phoneNumber: string; address: string; state: string; city: string; }, 
+            reference: string,
+            recipient: string,
+            type: string,
+            ) => { 
+            try {
+            await emailjs.send(
+                import.meta.env.VITE_EMAIL_SERVICE_ID,     // Email.js Service ID
+                type === "seller" ? import.meta.env.VITE_EMAIL_TEMPLATE_ID : import.meta.env.VITE_EMAIL_TEMPLATE_ID_BUYER,    // Email.js Template ID
+            {
+                fullname: values.fullname,
+                useremail: recipient,
+                email: values.email,
+                order_id: reference,
+                order_date: new Date().toLocaleDateString(),
+                orders: cart.map(item => {
+                    return { 
+                        name: products.find(element => element.id === item.id)?.title, 
+                        price: products.find(element => element.id === item.id)?.price, 
+                        image_url: `https://ptrl.vercel.app${products.find(element => element.id === item.id)?.img}`, 
+                        quantity: item.quantity, 
+                        size: item.variation.size, 
+                    }
+                }),
+                phoneNumber: values.phoneNumber,
+                cost: {shipping: 5000, tax: 0, total: +totalPrice(cart) + 5000},
+                address: `${values.address}, ${values.city}, ${values.state}`
+            }
+            );
+            } catch (error) {
+                console.error('Failed to send email:', error);
+            } finally {
+                console.log("email sent")
+                if (type === "buyer") {
+                    window.location.replace("/")
+                }
+            }
+        };
+    
 
     useEffect(() => {
         if(open) {
@@ -90,11 +136,13 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                                 onError: (error) => {
                                     console.log(error)
                                 },
-                                onSuccess: (response) => {         
+                                onSuccess: (response) => {  
+                                           
                                     axios.post(`${API_BASE_URL}/order`, { ...values, order_items: cart, reference: response.reference })
                                     .then(() => {
-                                        localStorage.setItem("cart", "[]")
-                                        window.location.reload()
+                                        localStorage.setItem("cart", "[]")  
+                                        sendOrderEmail(values, response.reference, "abel.d.otegbola@gmail.com", "seller")
+                                        sendOrderEmail(values, response.reference, values.email, "buyer")
                                     })
                                 }
                             });

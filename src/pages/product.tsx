@@ -78,7 +78,9 @@ export default function ProductPage() {
                             }
                             
                             <button className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
-                                onClick={() => {addToCart({id: product?.id || "0", quantity: 1, variation: {size: selectedSize }}); setOpenCart(true)} }
+                                onClick={cart.find(element => element.id === product?.id) ? () => setOpenCart(true) : () => { 
+                                    addToCart({id: product?.id || "0", quantity: 1, variation: {size: selectedSize }});
+                                    setOpenCart(true)} }
                             >Buy now</button>
                         </div>
                         
