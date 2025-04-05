@@ -144,6 +144,8 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                                         sendOrderEmail(values, response.reference, "abel.d.otegbola@gmail.com", "seller")
                                         sendOrderEmail(values, response.reference, values.email, "buyer")
                                     })
+                                    
+                                    localStorage.setItem("cart", "[]")  
                                 }
                             });
                         
