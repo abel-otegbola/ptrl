@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../context/useStore";
 import CartCard from "../cartCard";
 import { useOutsideClick } from "../../helpers/isClickOutside";
+
 import { currencyFormatter } from "../../helpers/currencyFormatter";
 import { totalPrice } from "../../helpers/totalPrice";
 import Input from "../input";
@@ -34,8 +35,8 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
 
     return (
         <div ref={cartRef} className={`bg-white md:w-[500px] h-[100%] -translate-y-16 mb-12 sm:w-[400px] w-[100%] overflow-y-auto flex flex-col gap-6 px-6 pb-6 pt-2 duration-700 ${animate ? "translate-x-0" : "translate-x-[150%]"}`}>
-            <div className="flex justify-end">
-                <button className="py-4 cursor-pointer" onClick={() => setOpen(false)}>
+            <div className="flex justify-end sticky top-0 z-[25] ">
+                <button className="py-2 cursor-pointer bg-white" onClick={() => setOpen(false)}>
                     <img src="/close.svg" width={30} height={30} alt="close" />
                 </button>
             </div>
@@ -74,6 +75,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     validationSchema={orderSchema}
                     validateOnBlur={true}
                     onSubmit={( values, { setSubmitting }) => {
+                        setSubmitting(true)
                         axios.post(`${API_BASE_URL}/initialize`, {email: values.email, amount: ((+totalPrice(cart) + 5000) * 100).toString()})
                         .then(response => {
                             popup.resumeTransaction(response?.data?.data?.access_code)
@@ -85,26 +87,20 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                                 onCancel: () => {
                                   console.log('Popup closed without payment');
                                 },
-                                onSuccess: (response) => {
-                                  console.log('Payment completed. Reference:', response.reference);
-                                  
-                                  // Now verify the payment
-                                  axios.get(`${API_BASE_URL}/verify/${response.reference}`)
-                                    .then(verification => {
-                                      console.log('Verified transaction:', verification.data);
-                                      // The actual transaction ID is in verification.data.data.id
-                                      const transactionId = verification.data.data.id;
-                                      console.log('Transaction ID:', transactionId);
-                                    });
+                                onError: (error) => {
+                                    console.log(error)
+                                },
+                                onSuccess: (response) => {         
+                                    axios.post(`${API_BASE_URL}/order`, { ...values, order_items: cart, reference: response.reference })
+                                    .then(() => {
+                                        localStorage.setItem("cart", "[]")
+                                        window.location.reload()
+                                    })
                                 }
                             });
                         
                         })
                         .catch(error => console.log(error))
-
-                        // axios.post("http://localhost:3000/order", {...values, order_items: cart})
-                        // .then(response => console.log(response))
-                        // .catch(error => console.log(error))
                         setSubmitting(false);
                     }}
                     >
@@ -124,7 +120,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                             <Input placeholder="Delivery Address" label="Delivery Address" name="address" value={values.address} onChange={handleChange} type="text" error={touched.address ? errors.address : ""}  />
                             <Input placeholder="State" label="State" name="state" value={values.state} onChange={handleChange} type="text" error={touched.state ? errors.state : ""}  />
                             <Input placeholder="City" label="City" name="city" value={values.city} onChange={handleChange} type="text" error={touched.city ? errors.city : ""}  />
-                            <button type="submit" className="w-full cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg mb-20">{ isSubmitting ? "" : "Proceed to Paystack"}</button>
+                            <button disabled={cart.length < 1 || isSubmitting} type="submit" className={`w-full cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg mb-20 ${(cart.length < 1 || isSubmitting) ? "opacity-[0.5] cursor-not-allowed": "opacity-[1]"}`}>{ isSubmitting ? "" : "Proceed to Paystack"}</button>
                         </form>
                         )}
                 </Formik>

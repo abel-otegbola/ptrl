@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import { useLocalStorage } from "../helpers/useLocalStorage";
 import { ICart } from "../interface/store";
 
@@ -8,6 +8,8 @@ interface IStoreContext {
     removeFromCart: (id: string) => void;
     changeQuantity: (id: string, action: "ADD" | "MINUS" | number) => void;
     changeVariation: (type: string, id: string, value: string) => void;
+    openCart: boolean,
+    setOpenCart: (aug0: boolean) => void
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -15,6 +17,7 @@ export const StoreContext = createContext<IStoreContext>({} as IStoreContext)
 
 export default function StoreContextProvider({ children }: {children: React.ReactNode}) {
     const [cart, setCart] = useLocalStorage("cart", [])
+    const [openCart, setOpenCart] = useState(false)
 
     const addToCart = (data: ICart) => {
         setCart([...cart, data])
@@ -45,10 +48,7 @@ export default function StoreContextProvider({ children }: {children: React.Reac
         setCart(cart.map((item: ICart) => {
             if(item.id === id) {
                 if(type === "size") {
-                    return { ...item, variation: { size: value, color: item?.variation?.color } }
-                }
-                else if(type === "color") {
-                    return { ...item, variation: { color: value, size: item?.variation?.size } }
+                    return { ...item, variation: { size: value } }
                 }
                 else {
                     return item
@@ -64,6 +64,8 @@ export default function StoreContextProvider({ children }: {children: React.Reac
         removeFromCart,
         changeQuantity,
         changeVariation,
+        openCart,
+        setOpenCart
     }
 
     return (

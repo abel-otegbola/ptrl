@@ -14,7 +14,7 @@ export default function ProductPage() {
     const isVisible = useIsVisible(ref1);
     const ref2 = useRef<HTMLDivElement>(null)
     const isVisible2 = useIsVisible(ref2);
-    const { cart, addToCart,changeQuantity, removeFromCart, changeVariation } = useContext(StoreContext)
+    const { cart, addToCart,changeQuantity, removeFromCart, changeVariation, setOpenCart } = useContext(StoreContext)
     const [selectedSize, setSelectedSize] = useState("L")
 
     useEffect(() => {
@@ -65,7 +65,7 @@ export default function ProductPage() {
                         <div ref={ref2} className="flex flex-col gap-4 pb-2 w-full">
                             {
                                 cart.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
-                            <button className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { color: "black", size: selectedSize }}) }>add to cart</button>
+                            <button className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { size: selectedSize }}) }>add to cart</button>
                             :
                             <div className="flex justify-between text-[20px] items-center gap-1">
                                 <button className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg p-[12px]" onClick={() => changeQuantity(product?.id || "", "ADD")}>+</button>
@@ -76,7 +76,10 @@ export default function ProductPage() {
                                 }>-</button>
                             </div> 
                             }
-                            <button className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`}>Buy now</button>
+                            
+                            <button className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
+                                onClick={() => {addToCart({id: product?.id || "0", quantity: 1, variation: {size: selectedSize }}); setOpenCart(true)} }
+                            >Buy now</button>
                         </div>
                         
                         <div className="flex flex-col gap-2 text-black leading-[36px]">
