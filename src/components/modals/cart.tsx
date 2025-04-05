@@ -58,6 +58,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
             );
             } catch (error) {
                 console.error('Failed to send email:', error);
+                window.location.replace("/")
             } finally {
                 console.log("email sent")
                 if (type === "buyer") {
@@ -137,7 +138,6 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                                     console.log(error)
                                 },
                                 onSuccess: (response) => {  
-                                           
                                     axios.post(`${API_BASE_URL}/order`, { ...values, order_items: cart, reference: response.reference })
                                     .then(() => {
                                         localStorage.setItem("cart", "[]")  
