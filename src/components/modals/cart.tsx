@@ -18,6 +18,7 @@ import emailjs from "@emailjs/browser";
 export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0: boolean) => void }) {
     const { cart } = useContext(StoreContext)
     const [animate, setAnimate] = useState(false)
+    const [status, setStatus] = useState("")
     const popup = new PaystackPop()
 
     const cartRef = useOutsideClick(setOpen, false)
@@ -122,9 +123,9 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     validationSchema={orderSchema}
                     validateOnBlur={true}
                     onSubmit={( values, { setSubmitting }) => {
-                        setSubmitting(true)
                         axios.post(`${API_BASE_URL}/initialize`, {email: values.email, amount: ((+totalPrice(cart) + 5000) * 100).toString()})
                         .then(response => {
+                            setStatus("initiated")
                             popup.resumeTransaction(response?.data?.data?.access_code)
                             popup.checkout({
                                 key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
@@ -132,26 +133,46 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                                 amount: (+totalPrice(cart) + 5000) * 100,
                                 reference: response?.data?.data?.reference,
                                 onCancel: () => {
-                                  console.log('Popup closed without payment');
+                                    setSubmitting(false);
                                 },
                                 onError: (error) => {
                                     console.log(error)
+                                    setSubmitting(false);
                                 },
                                 onSuccess: (response) => {  
-                                    axios.post(`${API_BASE_URL}/order`, { ...values, order_items: cart, reference: response.reference })
+                                    axios.get(`${API_BASE_URL}/verify/${response.reference}`)
                                     .then(() => {
-                                        localStorage.setItem("cart", "[]")  
-                                        sendOrderEmail(values, response.reference, "abel.d.otegbola@gmail.com", "seller")
-                                        sendOrderEmail(values, response.reference, values.email, "buyer")
+                                        setStatus("verifying")
+                                        axios.post(`${API_BASE_URL}/order`, { ...values, order_items: cart, reference: response.reference })
+                                        .then((res) => {
+                                            if(res.status) {
+                                                setStatus("verified")
+                                                localStorage.setItem("cart", "[]")  
+                                                sendOrderEmail(values, response.reference, "abel.d.otegbola@gmail.com", "seller")
+                                                sendOrderEmail(values, response.reference, values.email, "buyer")
+                                                setSubmitting(false);
+                                            }
+                                            else {
+                                                setStatus("Verification failed")
+                                                setSubmitting(false);
+                                            }
+                                        })
                                     })
+                                    .catch(error => {
+                                        console.log(error)
+                                        setSubmitting(false);
+                                    })
+                                    
                                     
                                     localStorage.setItem("cart", "[]")  
                                 }
                             });
                         
                         })
-                        .catch(error => console.log(error))
-                        setSubmitting(false);
+                        .catch(error => {
+                            console.log(error)
+                            setSubmitting(false);
+                        })
                     }}
                     >
                     {({
@@ -170,7 +191,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                             <Input placeholder="Delivery Address" label="Delivery Address" name="address" value={values.address} onChange={handleChange} type="text" error={touched.address ? errors.address : ""}  />
                             <Input placeholder="State" label="State" name="state" value={values.state} onChange={handleChange} type="text" error={touched.state ? errors.state : ""}  />
                             <Input placeholder="City" label="City" name="city" value={values.city} onChange={handleChange} type="text" error={touched.city ? errors.city : ""}  />
-                            <button disabled={cart.length < 1 || isSubmitting} type="submit" className={`w-full cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg mb-20 ${(cart.length < 1 || isSubmitting) ? "opacity-[0.5] cursor-not-allowed": "opacity-[1]"}`}>{ isSubmitting ? "" : "Proceed to Paystack"}</button>
+                            <button disabled={cart.length < 1 || isSubmitting} type="submit" className={`w-full cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg mb-4 ${(cart.length < 1 || isSubmitting) ? "opacity-[0.5] cursor-not-allowed": "opacity-[1]"}`}>{ isSubmitting ? status : "Proceed to Paystack"}</button>
                         </form>
                         )}
                 </Formik>
