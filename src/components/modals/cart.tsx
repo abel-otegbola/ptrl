@@ -148,7 +148,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                                             if(res.status) {
                                                 setStatus("verified")
                                                 localStorage.setItem("cart", "[]")  
-                                                sendOrderEmail(values, response.reference, "abel.d.otegbola@gmail.com", "seller")
+                                                sendOrderEmail(values, response.reference, "champepesings@gmail.com", "seller")
                                                 sendOrderEmail(values, response.reference, values.email, "buyer")
                                                 setSubmitting(false);
                                             }
