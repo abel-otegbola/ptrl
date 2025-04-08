@@ -10,10 +10,19 @@ import { totalPrice } from "../../helpers/totalPrice";
 import Input from "../input";
 import { Formik } from "formik";
 import { orderSchema } from "../../schema/storeSchema";
-import axios from "axios";
-import { API_BASE_URL } from "../../helpers/config";
 import emailjs from "@emailjs/browser";
 import { paystack } from "../../helpers/paystack";
+import { initializeTransaction } from "@/actions/useInitializePayment";
+
+export interface PaystackResponse {
+    status: boolean;
+    message: string;
+    data: {
+      authorization_url: string;
+      access_code: string;
+      reference: string;
+    };
+}
 
 export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0: boolean) => void }) {
     const { cart } = useContext(StoreContext)
@@ -79,13 +88,20 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     initialValues={{ fullname: '', email: '', phoneNumber: '', address: '', state: '', city: '' }}
                     validationSchema={orderSchema}
                     validateOnBlur={true}
-                    onSubmit={( values, { setSubmitting }) => {
-                        axios.post(`${API_BASE_URL}/initialize`, {email: values.email, amount: ((+totalPrice(cart) + 5000) * 100).toString()})
-                        .then(async response => {
+                    onSubmit={async ( values, { setSubmitting }) => {
+                        try {
+                            const response = await initializeTransaction(values.email, ((+totalPrice(cart) + 5000) * 100).toString());
                             setStatus("initiated")
-                            await paystack(response?.data?.data?.access_code, values.email, cart, response?.data?.data?.reference, values, setStatus)
-                            setSubmitting(false)
-                        })
+                            if((response as PaystackResponse)?.status) {
+                                await paystack((response as PaystackResponse)?.data?.access_code, values.email, cart, (response as PaystackResponse)?.data?.reference, values, setStatus)
+                            }
+                            else {
+                                setSubmitting(false)
+                            }
+                        } 
+                        catch (error) {
+                            console.error('Payment error:', error);
+                        }
                     }}
                     >
                     {({

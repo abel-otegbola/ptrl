@@ -6,6 +6,9 @@ import axios from "axios";
 import { API_BASE_URL } from "./config";
 import { products } from "../data/products";
 import emailjs from "@emailjs/browser";
+import { verifyPayment } from "@/actions/useVerifyPayment";
+import { PaystackResponse } from "@/components/modals/cart";
+import { createOrder } from "@/actions/useOrder";
 
 const sendOrderEmail = async (
     values: { fullname: string; email: string; phoneNumber: string; address: string; state: string; city: string; }, 
@@ -79,28 +82,22 @@ export const paystack = async (accessCode: string, email: string, cart: ICart[],
                 }
             },
             onSuccess: async (response) => { 
-                await axios.get(`${API_BASE_URL}/verify/${response?.reference}`)
-                    .then(() => {
-                        setStatus("verifying")
-                        axios.post(`${API_BASE_URL}/order`, { ...values, order_items: cart, reference: response?.reference })
-                        .then((res) => {
-                            if(res.status) {
-                                setStatus("verified")
-                                localStorage.setItem("cart", "[]")  
-                                sendOrderEmail(values, response?.reference, "champepesings@gmail.com", "seller", cart)
-                                sendOrderEmail(values, response?.reference, values.email, "buyer", cart)
-                            }
-                            else {
-                                setStatus("Verification failed")
-                            }
-                        })
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                return {
-                    status: "success",
-                    reference: response.reference
+                setStatus("verifying")
+                const res = await verifyPayment(response?.reference)
+                if((res as PaystackResponse)?.status) {
+                    const newOrder = await createOrder({ ...values, order_items: cart, reference: response?.reference } )
+                    if(newOrder?.status) {
+                        setStatus("verified")
+                        localStorage.setItem("cart", "[]")  
+                        sendOrderEmail(values, response?.reference, "champepesings@gmail.com", "seller", cart)
+                        sendOrderEmail(values, response?.reference, values.email, "buyer", cart)
+                    }
+                    else {
+                        setStatus("Verification failed")
+                    }
+                }
+                else {
+                    setStatus("Not verified")
                 }
             }
         });
