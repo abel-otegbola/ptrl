@@ -1,6 +1,7 @@
+'use client'
 import { useRef } from "react";
 import { useIsVisible } from "../helpers/isVisible";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export default function Footer() {
     const ref3 = useRef<HTMLDivElement>(null)
@@ -25,8 +26,8 @@ export default function Footer() {
                 <img src="/logo.png" width={90} height={60} alt="logo" className="" />
                 <p className="uppercase">Follow us</p>
                 <div className="flex items-center md:gap-8 gap-4 text-[#C22026] uppercase">
-                    <Link to={"https://www.instagram.com/ptrlstudios"} className=""><img src="/instagram.svg" width={25} height={25} alt="instagram"  /></Link>
-                    <Link to={"https://whatsapp.com"} className=""><img src="/whatsapp.svg" width={25} height={25} alt="whatsapp"  /></Link>
+                    <Link href={"https://www.instagram.com/ptrlstudios"} className=""><img src="/instagram.svg" width={25} height={25} alt="instagram"  /></Link>
+                    <Link href={"https://whatsapp.com"} className=""><img src="/whatsapp.svg" width={25} height={25} alt="whatsapp"  /></Link>
                 </div>
             </div>
 

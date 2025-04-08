@@ -1,3 +1,4 @@
+'use client'
 import { useRef } from "react";
 import ProductCard from "../components/productCard";
 import { useIsVisible } from "../helpers/isVisible";

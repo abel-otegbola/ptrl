@@ -1,3 +1,4 @@
+'use client'
 import { createContext, useState } from "react";
 import { useLocalStorage } from "../helpers/useLocalStorage";
 import { ICart } from "../interface/store";

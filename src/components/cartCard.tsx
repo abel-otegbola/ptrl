@@ -15,8 +15,8 @@ export default function CartCard({ product }: { product: { id: string, title: st
                 </a>
                 <div className="md:px-4 py-2 px-1 mr-12 w-full h-full flex-1 flex flex-col md:gap-2 gap-[6px]">
                     <a href={`/product/${product?.id}`} className="uppercase text-[12px] leading-[140%] font-bold">{product?.title}</a>
-                    <p>Size: {cart.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item?.variation.size)}</p>                                
-                    <p>Quantity: {cart.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item?.quantity)}</p>                              
+                    <p>Size: {cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item?.variation.size)}</p>                                
+                    <p>Quantity: {cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item?.quantity)}</p>                              
                 </div>
                 
                 <p className="flex items-center md:text-[18px] text-[15px]">{currencyFormatter(product?.price)}</p>

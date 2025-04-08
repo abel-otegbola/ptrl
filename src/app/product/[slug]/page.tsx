@@ -1,14 +1,15 @@
+'use client'
 import { useContext, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import { products } from "../data/products";
-import { useIsVisible } from "../helpers/isVisible";
-import { StoreContext } from "../context/useStore";
-import { ICart } from "../interface/store";
-import ProductCard from "../components/productCard";
-import { currencyFormatter } from "../helpers/currencyFormatter";
+import { useIsVisible } from "../../../helpers/isVisible";
+import { StoreContext } from "../../../context/useStore";
+import { products } from "../../../data/products";
+import { ICart } from "../../../interface/store";
+import { currencyFormatter } from "../../../helpers/currencyFormatter";
+import ProductCard from "../../../components/productCard";
+import { useParams } from "next/navigation";
 
 export default function ProductPage() {
-    const { title } = useParams();
+    const { slug } = useParams();
     const [product, setProduct] = useState({ id: "0", title: "", price: "", img: "", description: "" })
     const ref1 = useRef<HTMLDivElement>(null)
     const isVisible = useIsVisible(ref1);
@@ -16,12 +17,12 @@ export default function ProductPage() {
     const isVisible2 = useIsVisible(ref2);
     const { cart, addToCart,changeQuantity, removeFromCart, changeVariation, setOpenCart } = useContext(StoreContext)
     const [selectedSize, setSelectedSize] = useState("L")
-
+    
     useEffect(() => {
-        setProduct(products?.filter(item => item.id === title)[0])
-        setSelectedSize(cart.filter((item: ICart) => item.id !== product?.id)[0]?.variation.size)
+        setProduct(products?.filter(item => item.id === slug)[0])
+        setSelectedSize(cart?.filter((item: ICart) => item.id !== product?.id)[0]?.variation.size || selectedSize)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title])
+    }, [slug])
     
 
     return (
@@ -64,21 +65,21 @@ export default function ProductPage() {
                         
                         <div ref={ref2} className="flex flex-col gap-4 pb-2 w-full">
                             {
-                                cart.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
+                                cart?.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
                             <button className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { size: selectedSize }}) }>add to cart</button>
                             :
                             <div className="flex justify-between text-[20px] items-center gap-1">
-                                <button className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg p-[12px]" onClick={() => changeQuantity(product?.id || "", "ADD")}>+</button>
-                                <input className="w-[40px] py-2 text-center" type="number" value={cart.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString()} onChange={(e) => changeQuantity(product?.id, +e.target.value)} />
-                                <button className="h-[50px] w-[100px] text-[20px] border border-black cursor-pointer rounded-lg p-[12px]" onClick={() =>  
-                                    cart.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString() === "1" 
+                                <button className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg" onClick={() => changeQuantity(product?.id || "", "ADD")}>+</button>
+                                <input className="w-[40px] py-2 text-center" type="number" value={cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString()} onChange={(e) => changeQuantity(product?.id, +e.target.value)} />
+                                <button className="h-[50px] w-[100px] text-[20px] border border-black cursor-pointer rounded-lg" onClick={() =>  
+                                    cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString() === "1" 
                                     ? removeFromCart(product?.id) : changeQuantity(product?.id || "", "MINUS")
                                 }>-</button>
                             </div> 
                             }
                             
                             <button className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
-                                onClick={cart.find(element => element.id === product?.id) ? () => setOpenCart(true) : () => { 
+                                onClick={cart?.find(element => element.id === product?.id) ? () => setOpenCart(true) : () => { 
                                     addToCart({id: product?.id || "0", quantity: 1, variation: {size: selectedSize }});
                                     setOpenCart(true)} }
                             >Buy now</button>
