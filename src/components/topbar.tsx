@@ -16,7 +16,7 @@ export default function Topbar() {
             </div>
 
             <div className="relative flex justify-between md:px-12 px-4 sm:py-1 bg-white">
-                <Link href={"/"} className="z-[3] bg-white sm:w-auto w-[85%]"><img src="/logo.png" width={100} height={20} alt="logo" /></Link>
+                <Link href={"/"} className="z-[3] bg-white sm:w-auto w-[100%]"><img src="/logo.png" width={100} height={20} alt="logo" /></Link>
                 <div className="flex justify-end">
                     <button className="relative cursor-pointer" onClick={() => setOpenCart(!openCart)}>
                         <img src="/cart.svg" width={32} height={32} alt="cart" />

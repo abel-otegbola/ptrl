@@ -7,10 +7,14 @@ import { ICart } from "../../../interface/store";
 import { currencyFormatter } from "../../../helpers/currencyFormatter";
 import ProductCard from "../../../components/productCard";
 import { useParams } from "next/navigation";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Image from "next/image";
 
 export default function ProductPage() {
     const { slug } = useParams();
-    const [product, setProduct] = useState({ id: "0", title: "", price: "", img: "", description: "" })
+    const [product, setProduct] = useState({ id: "0", title: "", price: "", img: "", img2: "", description: "" })
     const ref1 = useRef<HTMLDivElement>(null)
     const isVisible = useIsVisible(ref1);
     const ref2 = useRef<HTMLDivElement>(null)
@@ -23,16 +27,29 @@ export default function ProductPage() {
         setSelectedSize(cart?.filter((item: ICart) => item.id !== product?.id)[0]?.variation.size || selectedSize)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [slug])
+
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+    };
     
 
     return (
         <main>
             <div className="grid lg:grid-cols-2 md:px-12 md:py-12 p-4 gap-12">
                 <div className="xl:px-[10%] lg:px-[8%]">
-                    <div ref={ref1} className={`w-full lg:h-full h-[450px] pb-12 bg-[#f6f6f4] rounded-lg bg-cover bg-center duration-700 ease-in-out 
-                        ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[10%]"}`} 
-                        style={{ backgroundImage: `url('${product?.img}')` }}
-                    ></div>
+                    <Slider {...settings} className="w-full rounded-lg max-w-[92vw]">
+                        {[product?.img, product?.img2].map((img, index) => (
+                            <Image alt={product.title} key={index} width={300} height={300} className={`pb-12 md:w-[300px] w-full rounded-lg bg-cover bg-center`} 
+                                src={img}
+                            />
+                        ))}
+                    </Slider>
                 </div>
                 
                 <div className="flex flex-col gap-6 md:px-[8%]">
@@ -85,7 +102,7 @@ export default function ProductPage() {
                             >Buy now</button>
                         </div>
                         
-                        <div className="flex flex-col gap-2 text-black leading-[36px]">
+                        <div className="flex flex-col gap-2 text-black leading-[36px] uppercase">
                             <div className="" dangerouslySetInnerHTML={{ __html: product?.description }}></div>
                         </div>
                 </div>

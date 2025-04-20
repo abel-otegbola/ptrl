@@ -48,49 +48,51 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
     }, [open])
 
     return (
-        <div ref={cartRef} className={`bg-white md:w-[500px] h-[100%] -translate-y-16 mb-12 sm:w-[400px] w-[100%] overflow-y-auto flex flex-col gap-6 px-6 pb-6 pt-2 duration-700 ${animate ? "translate-x-0" : "translate-x-[150%]"}`}>
+        <div ref={cartRef} className={`bg-white md:w-[500px] h-[100%] -translate-y-16 mb-12 sm:w-[400px] w-[100%] flex flex-col gap-6 px-6 pb-6 pt-2 duration-700 ${animate ? "translate-x-0" : "translate-x-[150%]"}`}>
             <div className="flex justify-end sticky top-0 z-[25] ">
                 <button className="py-2 cursor-pointer bg-white" onClick={() => setOpen(false)}>
                     <img src="/close.svg" width={30} height={30} alt="close" />
                 </button>
             </div>
-            <h4 className="md:text-[20px] text-[18px]">Order Summary</h4>
-            <div className="flex flex-col gap-2">
-            {   
-                cart?.length === 0 ?
-                <div className="min-h-[200px] flex flex-col gap-4 justify-center items-center">
-                    <p className="font-bold text-[20px]">Your cart is empty</p>
-                    <p className=""></p>
-                </div>
-                :
-                products.filter((item) => cart?.map((item: ICart) => item.id).indexOf(item.id) !== -1 ).map((product) => (
-                    <CartCard key={product?.id} product={product} />
-                ))
-            }
-            </div>
-            <div className="flex flex-col gap-4 py-4">
-                <div className="flex justify-between">
-                    <p>Subtotal</p>
-                    <p>{currencyFormatter(totalPrice(cart))}</p>
-                </div>
-                <div className="flex justify-between">
-                    <p>Shipping</p>
-                    <p>{currencyFormatter(cart?.length > 0 ? 5000 : 0)}</p>
-                </div>
-                <div className="flex justify-between">
-                    <p className="font-bold md:text-[22px] text-[18px]">Total</p>
-                    <p>{currencyFormatter(+totalPrice(cart) + (cart?.length > 0 ? 5000 : 0))}</p>
-                </div>
-            </div>
 
-            <h4 className="md:text-[20px] text-[18px] mt-4">Shipping Details</h4> 
+            <div className="overflow-y-auto flex flex-col gap-6 ">
+                <h4 className="md:text-[20px] text-[18px]">Order Summary</h4>
+                <div className="flex flex-col gap-2">
+                {   
+                    cart?.length === 0 ?
+                    <div className="min-h-[200px] flex flex-col gap-4 justify-center items-center">
+                        <p className="font-bold text-[20px]">Your cart is empty</p>
+                        <p className=""></p>
+                    </div>
+                    :
+                    products.filter((item) => cart?.map((item: ICart) => item.id).indexOf(item.id) !== -1 ).map((product) => (
+                        <CartCard key={product?.id} product={product} />
+                    ))
+                }
+                </div>
+                <div className="flex flex-col gap-4 py-4">
+                    <div className="flex justify-between">
+                        <p>Subtotal</p>
+                        <p>{currencyFormatter(totalPrice(cart))}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Shipping</p>
+                        <p>free</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p className="font-bold md:text-[22px] text-[18px]">Total</p>
+                        <p>{currencyFormatter(+totalPrice(cart))}</p>
+                    </div>
+                </div>
+
+                <h4 className="md:text-[20px] text-[18px] mt-4">Shipping Details</h4> 
                 <Formik
                     initialValues={{ fullname: '', email: '', phoneNumber: '', address: '', state: '', city: '' }}
                     validationSchema={orderSchema}
                     validateOnBlur={true}
                     onSubmit={async ( values, { setSubmitting }) => {
                         try {
-                            const response = await initializeTransaction(values.email, ((+totalPrice(cart) + 5000) * 100).toString());
+                            const response = await initializeTransaction(values.email, ((+totalPrice(cart)) * 100).toString());
                             setStatus("initiated")
                             if((response as PaystackResponse)?.status) {
                                 await paystack((response as PaystackResponse)?.data?.access_code, values.email, cart, (response as PaystackResponse)?.data?.reference, values, setStatus)
@@ -124,6 +126,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                         </form>
                         )}
                 </Formik>
+            </div>
         </div>
     )
 }
