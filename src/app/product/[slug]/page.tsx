@@ -113,7 +113,7 @@ export default function ProductPage() {
                 <h4 className="font-bold py-4 md:text-[20px] text-[16px]">You may also like</h4>
                 <section className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 md:gap-6 gap-4">
                     {
-                        products.slice(0,4).map(product => (
+                        products?.filter(item => item.id !== slug).slice(0,4).map(product => (
                             <ProductCard key={product.id} product={product} />
                         ))
                     }
