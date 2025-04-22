@@ -3,5 +3,5 @@ export const products = [
     { id: "2", title: "RED PTRL LOGO TRUCKER", price: "25099", img: "/RED-PTRL-LOGO-TRUCKER.webp", img2: "/RED-PTRL-LOGO-TRUCKER-SIDE.jpg", description: "<ol> <li>Product Type: Trucker hat</li> <li>Gender: Unisex</l1> </ol>"},
     { id: "1", title: "BLACK ART DEPT. TEE", price: "39099", img: "/BLACK-ART-DEPT-TEE.webp", img2: "/BLACK-ART-DEPT.-TEE-BACK.webp", description: "<ol> <li>Product Type: T-shirt</li> <li>Gender: Unisex</l1> <li>Fabric Type: 100% Cotton</li> <li>Fit Type: Oversized</li></ol>"},
     { id: "3", title: "WHITE GARAGE TEE", price: "39099", img: "/WHITE-GARAGE-TEE.webp", img2: "/WHITE-GARAGE-TEE-BACK.webp", description: "<ol> <li>Product Type: T-shirt</li> <li>Gender: Unisex</l1> <li>Fabric Type: 100% Cotton</li> <li>Fit Type: Oversized</li></ol>"},
-    { id: "4", title: "BLACK PTRL LOGO TRUCKER", price: "25099", img: "/BLACK-PTRL-LOGO-TRUCKER.webp", img2: "", description: "<ol> <li>Product Type: Trucker hat</li> <li>Gender: Unisex</l1> </ol>"},
+    { id: "4", title: "BLACK PTRL LOGO TRUCKER", price: "25099", img: "/BLACK-PTRL-LOGO-TRUCKER.webp", img2: "/BLACK-PTRL-LOGO-TRUCKER.webp", description: "<ol> <li>Product Type: Trucker hat</li> <li>Gender: Unisex</l1> </ol>"},
 ]

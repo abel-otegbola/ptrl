@@ -5,6 +5,16 @@
     to { transform: translateX(-100%); }
 }
 
+@font-face {
+    font-family: 'Play Pretend';
+    src: url('/fonts/PlayPretend.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+.ptrl-logo {
+    font-family: 'Play Pretend', sans-serif;
+}
+
 .animate-infinite-scroll {
     animation: infinite-scroll 40s linear infinite;
 }
