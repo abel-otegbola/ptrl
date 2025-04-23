@@ -13,6 +13,7 @@ import { orderSchema } from "../../schema/storeSchema";
 import emailjs from "@emailjs/browser";
 import { paystack } from "../../helpers/paystack";
 import { initializeTransaction } from "@/actions/useInitializePayment";
+import { Toaster, toast } from "react-hot-toast";
 
 export interface PaystackResponse {
     status: boolean;
@@ -28,6 +29,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
     const { cart } = useContext(StoreContext)
     const [animate, setAnimate] = useState(false)
     const [status, setStatus] = useState("")
+    const [popup, setPopup] = useState({ type: "", msg: "" });
 
     const cartRef = useOutsideClick(setOpen, false)
 
@@ -47,6 +49,15 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
         }
     }, [open])
 
+    useEffect(() => {
+        if (popup?.type === "success") {
+            toast.success(popup.msg)
+        }
+        if (popup?.type === "error") {
+            toast.error(popup.msg);
+        }
+    }, [popup]);
+
     return (
         <div ref={cartRef} className={`bg-white md:w-[500px] h-[100%] -translate-y-16 mb-12 sm:w-[400px] w-[100%] flex flex-col gap-6 px-6 pb-6 pt-2 duration-700 ${animate ? "translate-x-0" : "translate-x-[150%]"}`}>
             <div className="flex justify-end sticky top-0 z-[25] ">
@@ -54,6 +65,8 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     <img src="/close.svg" width={30} height={30} alt="close" />
                 </button>
             </div>
+            
+            <Toaster containerClassName="p-8" />
 
             <div className="overflow-y-auto flex flex-col gap-6 ">
                 <h4 className="md:text-[20px] text-[18px]">Order Summary</h4>
@@ -95,14 +108,16 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                             const response = await initializeTransaction(values.email, ((+totalPrice(cart)) * 100).toString());
                             setStatus("initiated")
                             if((response as PaystackResponse)?.status) {
-                                await paystack((response as PaystackResponse)?.data?.access_code, values.email, cart, (response as PaystackResponse)?.data?.reference, values, setStatus)
+                                await paystack((response as PaystackResponse)?.data?.access_code, values.email, cart, (response as PaystackResponse)?.data?.reference, values, setStatus, setPopup)
                             }
                             else {
+                                setPopup({ type: "error", msg: "Couldn't initiate payment. Try again" })
                                 setSubmitting(false)
                             }
                         } 
                         catch (error) {
-                            console.error('Payment error:', error);
+                            setPopup({ type: "error", msg: "Payment error" + error })
+                            setSubmitting(false)
                         }
                     }}
                     >

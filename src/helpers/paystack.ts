@@ -53,7 +53,15 @@ const sendOrderEmail = async (
 };
     
 
-export const paystack = async (accessCode: string, email: string, cart: ICart[], reference: string, values: { fullname: string; email: string; phoneNumber: string; address: string; state: string; city: string; }, setStatus: (aug0: string) => void) => {
+export const paystack = async (
+    accessCode: string, 
+    email: string, 
+    cart: ICart[], 
+    reference: string, 
+    values: { fullname: string; email: string; phoneNumber: string; address: string; state: string; city: string; }, 
+    setStatus: (aug0: string) => void,
+    setPopup: (aug0: { type: string, msg: string }) => void
+) => {
     try {
         const initializePaystack = async () => {
             if (typeof window === 'undefined') return null;
@@ -70,12 +78,14 @@ export const paystack = async (accessCode: string, email: string, cart: ICart[],
             amount: (+totalPrice(cart) + 5000) * 100,
             reference,
             onCancel: () => {
+                setPopup({ type: "error", msg: "Payment Cancelled." })
                 return {
                     status: "cancelled",
                     reference: "",
                 }
             },
             onError: (error) => {
+                setPopup({ type: "error", msg: "Payment Unsuccessful." })
                 return {
                     status: error,
                     reference: "",
@@ -93,10 +103,12 @@ export const paystack = async (accessCode: string, email: string, cart: ICart[],
                         sendOrderEmail(values, response?.reference, values.email, "buyer", cart)
                     }
                     else {
+                        setPopup({ type: "error", msg: "Verification Unsuccessful." })
                         setStatus("Verification failed")
                     }
                 }
                 else {
+                    setPopup({ type: "error", msg: "Verification Unsuccessful." })
                     setStatus("Not verified")
                 }
             }
