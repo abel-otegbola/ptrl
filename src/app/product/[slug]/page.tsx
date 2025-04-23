@@ -45,8 +45,7 @@ export default function ProductPage() {
                 <div className="xl:px-[10%] lg:px-[8%]">
                     <Slider {...settings} className="w-full rounded-lg max-w-[92vw]">
                         {[product?.img, product?.img2].map((img, index) => (
-                            <Image alt={product.title} key={index} width={300} height={300} className={`pb-12 md:w-[300px] w-full rounded-lg bg-cover bg-center`} 
-                                src={img}
+                            <Image src={img} alt={product.title} key={index} width={2400} height={2400} className={`pb-12 w-full rounded-lg bg-cover bg-center`} 
                             />
                         ))}
                     </Slider>
