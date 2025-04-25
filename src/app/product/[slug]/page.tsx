@@ -81,24 +81,46 @@ export default function ProductPage() {
                         
                         <div ref={ref2} className="flex flex-col gap-4 pb-2 w-full">
                             {
-                                cart?.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
-                            <button className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { size: selectedSize }}) }>add to cart</button>
+                            cart?.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
+                            <button 
+                                className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
+                                onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { size: selectedSize }}) }
+                            >
+                                add to cart
+                            </button>
                             :
                             <div className="flex justify-between text-[20px] items-center gap-1">
-                                <button className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg" onClick={() => changeQuantity(product?.id || "", "ADD")}>+</button>
-                                <input className="w-[40px] py-2 text-center" type="number" value={cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString()} onChange={(e) => changeQuantity(product?.id, +e.target.value)} />
-                                <button className="h-[50px] w-[100px] text-[20px] border border-black cursor-pointer rounded-lg" onClick={() =>  
-                                    cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString() === "1" 
+                                <button 
+                                    className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg" 
+                                    onClick={() => changeQuantity(product?.id || "", "ADD")}
+                                >
+                                    +
+                                </button>
+                                <input 
+                                    className="w-[40px] py-2 text-center" 
+                                    type="number" 
+                                    value={cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString()} 
+                                    onChange={(e) => changeQuantity(product?.id, +e.target.value)} 
+                                />
+                                <button 
+                                    className="h-[50px] w-[100px] text-[20px] border border-black cursor-pointer rounded-lg" 
+                                    onClick={() => cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString() === "1" 
                                     ? removeFromCart(product?.id) : changeQuantity(product?.id || "", "MINUS")
-                                }>-</button>
+                                }>
+                                -
+                                </button>
                             </div> 
                             }
                             
-                            <button className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
+                            <button 
+                                className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
                                 onClick={cart?.find(element => element.id === product?.id) ? () => setOpenCart(true) : () => { 
                                     addToCart({id: product?.id || "0", quantity: 1, variation: {size: selectedSize }});
-                                    setOpenCart(true)} }
-                            >Buy now</button>
+                                    setOpenCart(true)} 
+                                }
+                            >
+                                Buy now
+                            </button>
                         </div>
                         
                         <div className="flex flex-col gap-2 text-black leading-[36px] uppercase">

@@ -1,12 +1,17 @@
 'use client'
 import Slider from "./slider";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../context/useStore";
 import Cart from "./modals/cart";
 import Link from "next/link";
 
 export default function Topbar() {
     const { cart, openCart, setOpenCart } = useContext(StoreContext)
+    const [cartAmount, setCartAmount] = useState(0)
+
+    useEffect(() => {
+        setCartAmount(cart.length)
+    }, [cart])
 
     return (
         <>
@@ -20,7 +25,7 @@ export default function Topbar() {
                 <div className="flex justify-end">
                     <button className="relative cursor-pointer" onClick={() => setOpenCart(!openCart)}>
                         <img src="/cart.svg" width={32} height={32} alt="cart" />
-                        <span className="absolute top-3 -right-1 bg-[#c22026] text-white rounded-full text-[10px] px-[6px]">{cart?.length}</span>
+                        <span className="absolute top-3 -right-1 bg-[#c22026] text-white rounded-full text-[10px] px-[6px]">{cartAmount}</span>
                     </button>
                 </div>
             </div>

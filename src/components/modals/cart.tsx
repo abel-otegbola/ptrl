@@ -1,7 +1,7 @@
 'use client'
 import { products } from "../../data/products";
 import { ICart } from "../../interface/store";
-import { useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../context/useStore";
 import CartCard from "../cartCard";
 import { useOutsideClick } from "../../helpers/isClickOutside";
@@ -14,6 +14,7 @@ import emailjs from "@emailjs/browser";
 import { paystack } from "../../helpers/paystack";
 import { initializeTransaction } from "@/actions/useInitializePayment";
 import { Toaster, toast } from "react-hot-toast";
+import { useVerifyPayment } from "@/helpers/verifyPayment";
 
 export interface PaystackResponse {
     status: boolean;
@@ -30,6 +31,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
     const [animate, setAnimate] = useState(false)
     const [status, setStatus] = useState("")
     const [popup, setPopup] = useState({ type: "", msg: "" });
+    const [data, setData] = useState({ reference: "", values: {} })
 
     const cartRef = useOutsideClick(setOpen, false)
 
@@ -57,6 +59,11 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
             toast.error(popup.msg);
         }
     }, [popup]);
+
+    const handleVerification = (e:FormEvent) => {
+        e.preventDefault()
+        useVerifyPayment(data?.reference, data?.values, cart, setStatus, setPopup)
+    }
 
     return (
         <div ref={cartRef} className={`bg-white md:w-[500px] h-[100%] -translate-y-16 mb-12 sm:w-[400px] w-[100%] flex flex-col gap-6 px-6 pb-6 pt-2 duration-700 ${animate ? "translate-x-0" : "translate-x-[150%]"}`}>
@@ -108,7 +115,18 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                             const response = await initializeTransaction(values.email, ((+totalPrice(cart)) * 100).toString());
                             setStatus("initiated")
                             if((response as PaystackResponse)?.status) {
-                                await paystack((response as PaystackResponse)?.data?.access_code, values.email, cart, (response as PaystackResponse)?.data?.reference, values, setStatus, setPopup)
+                                await paystack(
+                                    (response as PaystackResponse)?.data?.access_code, 
+                                    values.email, 
+                                    cart, 
+                                    (response as PaystackResponse)?.data?.reference, 
+                                    values, 
+                                    setStatus, 
+                                    setPopup,
+                                    setData,
+                                    data
+                                )
+                                setData({ ...data, values })
                             }
                             else {
                                 setPopup({ type: "error", msg: "Couldn't initiate payment. Try again" })
@@ -137,7 +155,12 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                             <Input placeholder="Delivery Address" label="Delivery Address" name="address" value={values.address} onChange={handleChange} type="text" error={touched.address ? errors.address : ""}  />
                             <Input placeholder="State" label="State" name="state" value={values.state} onChange={handleChange} type="text" error={touched.state ? errors.state : ""}  />
                             <Input placeholder="City" label="City" name="city" value={values.city} onChange={handleChange} type="text" error={touched.city ? errors.city : ""}  />
-                            <button disabled={cart?.length < 1 || isSubmitting} type="submit" className={`w-full cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg mb-4 ${(cart?.length < 1 || isSubmitting) ? "opacity-[0.5] cursor-not-allowed": "opacity-[1]"}`}>{ isSubmitting ? status : "Proceed to Paystack"}</button>
+                            {
+                                status === "Verification failed" ?
+                                <button type="submit" onClick={handleVerification} className={`w-full cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg mb-4  ? "opacity-[0.5] cursor-not-allowed": "opacity-[1]"}`}>{ isSubmitting ? status : "Verify Payment"}</button>
+                                :
+                                <button disabled={cart?.length < 1 || isSubmitting} type="submit" className={`w-full cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg mb-4 ${(cart?.length < 1 || isSubmitting) ? "opacity-[0.5] cursor-not-allowed": "opacity-[1]"}`}>{ isSubmitting ? status : "Proceed to Paystack"}</button>
+                            }
                         </form>
                         )}
                 </Formik>
