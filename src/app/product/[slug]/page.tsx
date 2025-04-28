@@ -14,7 +14,7 @@ import Image from "next/image";
 
 export default function ProductPage() {
     const { slug } = useParams();
-    const [product, setProduct] = useState({ id: "0", title: "", price: "", img: "", img2: "", description: "" })
+    const [product, setProduct] = useState({ id: "0", title: "", price: "", img: "", img2: "", description: "", available: true })
     const ref1 = useRef<HTMLDivElement>(null)
     const isVisible = useIsVisible(ref1);
     const ref2 = useRef<HTMLDivElement>(null)
@@ -54,8 +54,8 @@ export default function ProductPage() {
                 <div className="flex flex-col gap-6 md:px-[8%]">
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-3 md:text-[16px] text-[14px]">
-                                <p className={`uppercase font-bold duration-700 ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-40%]"}`}>{product?.title}</p>
-                                <p className={`font-medium ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-60%]"}`}>{currencyFormatter(product?.price)}</p>
+                                <p className={`uppercase font-bold duration-700`}>{product?.title}</p>
+                                <p className={`font-medium`}>{currencyFormatter(product.price)}</p>
                             </div>
                             <p className="uppercase text-[#989898]">all items in stock</p>
 
@@ -84,6 +84,7 @@ export default function ProductPage() {
                         
                         <div ref={ref2} className="flex flex-col gap-4 pb-2 w-full">
                             {
+                            product.available ?
                             cart?.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
                             <button 
                                 className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
@@ -113,8 +114,11 @@ export default function ProductPage() {
                                 -
                                 </button>
                             </div> 
+                            :
+                            <p className="border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-center text-white p-6 py-4 rounded-lg uppercase">Coming soon</p>
                             }
-                            
+                            {
+                            product.available ? 
                             <button 
                                 className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
                                 onClick={cart?.find(element => element.id === product?.id) ? () => setOpenCart(true) : () => { 
@@ -124,6 +128,9 @@ export default function ProductPage() {
                             >
                                 Buy now
                             </button>
+                            :
+                            ""
+                            }
                         </div>
                         
                         <div className="flex flex-col gap-2 text-black leading-[36px] uppercase">
