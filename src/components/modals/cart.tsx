@@ -15,6 +15,7 @@ import { paystack } from "../../helpers/paystack";
 import { initializeTransaction } from "@/actions/useInitializePayment";
 import { Toaster, toast } from "react-hot-toast";
 import { useVerifyPayment } from "@/helpers/verifyPayment";
+import Dropdown from "../dropdown";
 
 export interface PaystackResponse {
     status: boolean;
@@ -32,12 +33,34 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
     const [status, setStatus] = useState("")
     const [popup, setPopup] = useState({ type: "", msg: "" });
     const [data, setData] = useState({ reference: "", values: {} })
+    const [shippingPrice, setShippingPrice] = useState(0)
 
     const cartRef = useOutsideClick(setOpen, false)
 
     useEffect(() => {
         emailjs.init(process.env.NEXT_PUBLIC_EMAIL_PRIVATE_KEY || "");
     }, []);
+
+    const shippingStates = [
+        { id: 0, title: "Lagos (Yaba) - ₦3,500", price: 3500 },
+        { id: 1, title: "Lagos (Ikeja) - ₦3,000", price: 3000 },
+        { id: 2, title: "Lagos (Berger) - ₦3,000", price: 3000 },
+        { id: 3, title: "Lagos (Surulere) - ₦4,000", price: 4000 },
+        { id: 4, title: "Lagos (Egbeda) - ₦4,200", price: 4200 },
+        { id: 5, title: "Lagos (Iyana Ipaja) - ₦4,500", price: 4500 },
+        { id: 6, title: "Lagos (Agege) - ₦4,000", price: 4000 },
+        { id: 7, title: "Lagos (Oshodi) - ₦3,200", price: 3200 },
+        { id: 8, title: "Lagos (Ikorodu) - ₦5,500", price: 5500 },
+        { id: 9, title: "Lagos (Ajah) - ₦7,500", price: 7500 },
+        { id: 10, title: "Lagos (Badagry) - ₦9,000", price: 9000 },
+        { id: 11, title: "Lagos (LASU/Iyana-iba) - ₦7,200", price: 7200 },
+        { id: 12, title: "Lagos (Ejigbo / Jakande gate / Isolo) - ₦5,500", price: 5500 },
+        { id: 13, title: "Lagos (Ikotun / Ijegun / Abaranje) - ₦5,500", price: 5500 },
+        { id: 14, title: "Lagos (Anywhere on the Island) - ₦6,500", price: 6500 },
+        { id: 15, title: "Ibadan - ₦5,500", price: 5500 },
+        { id: 16, title: "Abuja - ₦6,300", price: 6300 },
+        { id: 17, title: "Benin - ₦5,500", price: 5500 },
+    ]
 
     useEffect(() => {
         if(open) {
@@ -97,15 +120,16 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     </div>
                     <div className="flex justify-between">
                         <p>Shipping</p>
-                        <p>free</p>
+                        <p>{currencyFormatter(shippingPrice)}</p>
                     </div>
                     <div className="flex justify-between">
                         <p className="font-bold md:text-[22px] text-[18px]">Total</p>
-                        <p>{currencyFormatter(+totalPrice(cart))}</p>
+                        <p>{currencyFormatter(+totalPrice(cart) + shippingPrice)}</p>
                     </div>
                 </div>
 
                 <h4 className="md:text-[20px] text-[18px] mt-4">Shipping Details</h4> 
+                <p className="italic text-[14px]">Heads up: We currently only ship to Lagos, Ogun, Ibadan & Abuja.</p>
                 <Formik
                     initialValues={{ fullname: '', email: '', phoneNumber: '', address: '', state: '', city: '' }}
                     validationSchema={orderSchema}
@@ -145,6 +169,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                         touched,
                         handleChange,
                         handleSubmit,
+                        setFieldValue,
                         isSubmitting,
                     }) => (
 
@@ -153,7 +178,9 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                             <Input placeholder="Email Address" label="Email Address" name="email" value={values.email} onChange={handleChange} type="email" error={touched.email ? errors.email : ""}  />
                             <Input placeholder="Phone Number" label="Phone Number" name="phoneNumber" value={values.phoneNumber} onChange={handleChange} type="text" error={touched.phoneNumber ? errors.phoneNumber : ""}  />
                             <Input placeholder="Delivery Address" label="Delivery Address" name="address" value={values.address} onChange={handleChange} type="text" error={touched.address ? errors.address : ""}  />
-                            <Input placeholder="State" label="State" name="state" value={values.state} onChange={handleChange} type="text" error={touched.state ? errors.state : ""}  />
+                            <Dropdown placeholder="State" label="State" error={touched.state ? errors.state : ""} value={values.state} onChange={(value) => { setFieldValue("state", value); setShippingPrice(shippingStates.find(states => states.title === value)?.price || 0)}} 
+                                options={shippingStates.map(states => { return { id: states.id, title: states.title } })}   
+                            />
                             <Input placeholder="City" label="City" name="city" value={values.city} onChange={handleChange} type="text" error={touched.city ? errors.city : ""}  />
                             {
                                 status === "Verification failed" ?

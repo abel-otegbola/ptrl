@@ -68,8 +68,11 @@ export default function ProductPage() {
                                     ["S", "M", "L", "XL", "XXL"].map(size => (
                                         <button 
                                             key={size} 
-                                            className={`cursor-pointer border border-black md:px-4 px-3 py-[4px] uppercase leading-[24px] hover:bg-black hover:text-white
-                                            ${selectedSize === size ? "bg-black text-white" : "border black"}`}
+                                            disabled={size === "S" || size === "XXL"}
+                                            className={`cursor-pointer border border-black md:px-4 px-3 py-[4px] uppercase leading-[24px] hover:bg-black hover:text-white duration-500
+                                            ${selectedSize === size ? "bg-black text-white" : "border black"}
+                                            ${size === "S" || size === "XXL" ? "opacity-[0.2]" : ""}
+                                            `}
                                             onClick={() => { changeVariation("size", product?.id || "", size); setSelectedSize(size)}}
                                         >
                                             {size}
