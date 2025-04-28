@@ -7,6 +7,38 @@ import Link from "next/link"
 export default function CartCard({ product }: { product: { id: string, title: string, img: string, price: string } }) {
     const { cart, removeFromCart } = useContext(StoreContext)
     const [actions, setActions] = useState(false)
+    const [dragStartX, setDragStartX] = useState<number | null>(null);
+    const [dragEndX, setDragEndX] = useState<number | null>(null);
+
+    const handleDragStart = (e: React.MouseEvent | React.TouchEvent): void => {
+        const clientX =
+            e.type === 'touchstart'
+                ? (e as React.TouchEvent).touches[0].clientX
+                : (e as React.MouseEvent).clientX;
+        setDragStartX(clientX);
+    };
+
+    const handleDragMove = (e: React.TouchEvent | React.MouseEvent): void => {
+        if (!dragStartX) return;
+        const clientX =
+            e.type === 'touchmove'
+                ? (e as React.TouchEvent).touches[0].clientX
+                : (e as React.MouseEvent).clientX;
+        setDragEndX(clientX);
+    };
+
+    const handleDragEnd = (): void => {
+        if (dragStartX !== null && dragEndX !== null) {
+            const dragDistance = dragEndX - dragStartX;
+            if (dragDistance > 50) {
+                setActions(false); // Swipe left -> Next slide
+            } else if (dragDistance < -50) {
+                setActions(true); // Swipe right -> Previous slide
+            }
+        }
+        setDragStartX(null);
+        setDragEndX(null);
+    };
 
     return (
         <div className="overflow-hidden w-full">
@@ -16,6 +48,13 @@ export default function CartCard({ product }: { product: { id: string, title: st
                 onClick={() => setActions(true)} 
                 onMouseOver={() => setActions(true)} 
                 onMouseOut={() => setActions(false)}
+                onMouseDown={handleDragStart}
+                onMouseMove={handleDragMove}
+                onMouseUp={handleDragEnd}
+                onMouseLeave={handleDragEnd}
+                onTouchStart={handleDragStart}
+                onTouchMove={handleDragMove}
+                onTouchEnd={handleDragEnd}
             >
                 <Link href={`/product/${product?.id}`}>
                     <img src={product?.img} alt={product?.title} width={80} height={100} className="rounded h-full min-w-[80px]" />

@@ -43,8 +43,8 @@ export default function Dropdown({ className, disabled, label, name, options, va
             </div>
 
             <div className={`flex items-center relative rounded-lg bg-transparent w-full p-1 px-4 border duration-500 z-[1] 
-                ${error && !focus ? "border-red text-red" : "border-black/[0.2]  dark:text-gray dark:border-gray-500/[0.2]"}
-                ${focus ? "border-primary shadow-input-active" : " "}
+                ${error && !focus ? "border-[#C22026] text-red-500" : "border-black/[0.2]"}
+                ${focus ? "border-black shadow-input-active" : " "}
                 ${ className }
             `}>
                 <span className="text-[16px]">

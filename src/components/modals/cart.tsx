@@ -158,7 +158,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                             }
                         } 
                         catch (error) {
-                            setPopup({ type: "error", msg: "Payment error" + error })
+                            setPopup({ type: "error", msg: "Payment unsuccessful! " + error })
                             setSubmitting(false)
                         }
                     }}
