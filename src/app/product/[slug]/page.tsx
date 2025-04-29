@@ -55,9 +55,9 @@ export default function ProductPage() {
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-3 md:text-[16px] text-[14px]">
                                 <p className={`uppercase font-bold duration-700`}>{product?.title}</p>
-                                <p className={`font-medium`}>{currencyFormatter(product.price)}</p>
+                                <p className={`font-medium`}>{ product?.available ? currencyFormatter(product.price) : "Coming soon"}</p>
                             </div>
-                            <p className="uppercase text-[#989898]">all items in stock</p>
+                            <p className="uppercase text-[#989898]">{  product?.available ? "all items in stock" : "" }</p>
 
                         </div>
 
@@ -65,19 +65,20 @@ export default function ProductPage() {
                             <p className="uppercase text-[#989898]">size</p>
                             <div className="flex md:gap-6 gap-3 items-center">
                                 {
-                                    ["S", "M", "L", "XL", "XXL"].map(size => (
+                                    product?.available ? 
+                                    ["M", "L", "XL"].map(size => (
                                         <button 
                                             key={size} 
-                                            disabled={size === "S" || size === "XXL"}
                                             className={`cursor-pointer border border-black md:px-4 px-3 py-[4px] uppercase leading-[24px] hover:bg-black hover:text-white duration-500
                                             ${selectedSize === size ? "bg-black text-white" : "border black"}
-                                            ${size === "S" || size === "XXL" ? "opacity-[0.2]" : ""}
                                             `}
                                             onClick={() => { changeVariation("size", product?.id || "", size); setSelectedSize(size)}}
                                         >
                                             {size}
                                         </button>
                                     ))
+                                    :
+                                    ""
                                 }
                             </div>
                         </div>

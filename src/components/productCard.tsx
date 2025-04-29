@@ -16,7 +16,7 @@ export default function ProductCard({ product }: { product: { id: string, title:
                     product.available ?
                     ""
                     :
-                    <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full bg-black/[0.2]">
+                    <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full bg-black/[0.2] rounded-lg">
                         <p className="text-white">Coming soon</p>
                     </div>
                 }
