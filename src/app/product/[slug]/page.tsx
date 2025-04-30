@@ -14,7 +14,7 @@ import Image from "next/image";
 
 export default function ProductPage() {
     const { slug } = useParams();
-    const [product, setProduct] = useState({ id: "0", title: "", price: "", img: "", img2: "", description: "", available: true })
+    const [product, setProduct] = useState({ id: "0", title: "", price: "", img: "/preview.png", img2: "", description: "", available: true, category: "" })
     const ref1 = useRef<HTMLDivElement>(null)
     const isVisible = useIsVisible(ref1);
     const ref2 = useRef<HTMLDivElement>(null)
@@ -43,12 +43,18 @@ export default function ProductPage() {
         <main>
             <div className="grid lg:grid-cols-2 md:px-12 md:py-12 p-4 gap-12">
                 <div className="xl:px-[10%] lg:px-[8%]">
-                    <Slider {...settings} className="w-full rounded-lg max-w-[92vw]">
-                        {[product?.img, product?.img2].map((img, index) => (
-                            <Image src={img} alt={product.title} key={index} width={2400} height={2400} className={`pb-12 w-full rounded-lg bg-cover bg-center`} 
-                            />
-                        ))}
-                    </Slider>
+                    {
+                        product?.category === "tee" ?
+                        <Slider {...settings} className="w-full rounded-lg max-w-[92vw]">
+                            {[product?.img, product?.img2].map((img, index) => (
+                                <Image src={img} alt={product.title} key={index} width={2400} height={2400} className={`pb-12 w-full rounded-lg bg-cover bg-center`} 
+                                />
+                            ))}
+                        </Slider>
+                        :
+                        <Image src={product?.img} alt={product.title} width={2400} height={2400} className={`pb-12 w-full rounded-lg bg-cover bg-center`} 
+                        />
+                    }
                 </div>
                 
                 <div className="flex flex-col gap-6 md:px-[8%]">
@@ -61,35 +67,37 @@ export default function ProductPage() {
 
                         </div>
 
-                        <div className="flex flex-col gap-2 pb-12">
-                            <p className="uppercase text-[#989898]">size</p>
-                            <div className="flex md:gap-6 gap-3 items-center">
-                                {
-                                    product?.available ? 
-                                    ["M", "L", "XL"].map(size => (
-                                        <button 
-                                            key={size} 
-                                            className={`cursor-pointer border border-black md:px-4 px-3 py-[4px] uppercase leading-[24px] hover:bg-black hover:text-white duration-500
-                                            ${selectedSize === size ? "bg-black text-white" : "border black"}
-                                            `}
-                                            onClick={() => { changeVariation("size", product?.id || "", size); setSelectedSize(size)}}
-                                        >
-                                            {size}
-                                        </button>
-                                    ))
-                                    :
-                                    ""
-                                }
+                        {
+                            product?.available && product?.category === "tee" ? 
+                            <div className="flex flex-col gap-2 pb-12">
+                                <p className="uppercase text-[#989898]">size</p>
+                                <div className="flex md:gap-6 gap-3 items-center">
+                                        { 
+                                        ["M", "L", "XL"].map(size => (
+                                            <button 
+                                                key={size} 
+                                                className={`cursor-pointer border border-black md:px-4 px-3 py-[4px] uppercase leading-[24px] hover:bg-black hover:text-white duration-500
+                                                ${selectedSize === size ? "bg-black text-white" : "border black"}
+                                                `}
+                                                onClick={() => { changeVariation("size", product?.id || "", size); setSelectedSize(size)}}
+                                            >
+                                                {size}
+                                            </button>
+                                        ))
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        
+                        :
+                        ""
+                        }
+            
                         <div ref={ref2} className="flex flex-col gap-4 pb-2 w-full">
                             {
                             product.available ?
                             cart?.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
                             <button 
                                 className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
-                                onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { size: selectedSize }}) }
+                                onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { size: product?.category === "tee" ? selectedSize : "" }}) }
                             >
                                 add to cart
                             </button>
@@ -101,6 +109,7 @@ export default function ProductPage() {
                                 >
                                     +
                                 </button>
+
                                 <input 
                                     className="w-[40px] py-2 text-center" 
                                     type="number" 

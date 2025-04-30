@@ -4,7 +4,7 @@ import { ICart } from "../interface/store"
 import { currencyFormatter } from "../helpers/currencyFormatter"
 import Link from "next/link"
 
-export default function CartCard({ product }: { product: { id: string, title: string, img: string, price: string } }) {
+export default function CartCard({ product }: { product: { id: string, title: string, img: string, price: string, category: string } }) {
     const { cart, removeFromCart } = useContext(StoreContext)
     const [actions, setActions] = useState(false)
     const [dragStartX, setDragStartX] = useState<number | null>(null);
@@ -59,9 +59,14 @@ export default function CartCard({ product }: { product: { id: string, title: st
                 <Link href={`/product/${product?.id}`}>
                     <img src={product?.img} alt={product?.title} width={80} height={100} className="rounded h-full min-w-[80px]" />
                 </Link>
-                <div className="md:px-4 py-2 px-1 mr-12 w-full h-full flex-1 flex flex-col md:gap-2 gap-[6px]">
+                <div className="md:px-4 py-2 px-1 mr-12 w-full h-full justify-between flex-1 flex flex-col md:gap-2 gap-[6px]">
                     <Link href={`/product/${product?.id}`} className="uppercase text-[12px] leading-[140%] font-bold">{product?.title}</Link>
-                    <p>Size: {cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item?.variation.size)}</p>                                
+                    {
+                        product?.category === "tee" ?
+                        <p>Size: {cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item?.variation.size)}</p> 
+                        : 
+                        ""                               
+                    }
                     <p>Quantity: {cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item?.quantity)}</p>                              
                 </div>
                 
