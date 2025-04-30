@@ -23,7 +23,12 @@ export default function ProductCard({ product }: { product: { id: string, title:
             </Link>
             <Link href={`/product/${product.id}`} className={`text-center uppercase md:w-[75%] font-bold md:leading-[24px] leading-[16px] md:text-[15px] text-[12px] duration-700 ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-40%]"}`}>{product.title}</Link>
             <p className={`font-medium ${isVisible ? "translate-y-[0%] opacity-[1] md:text-[15px] text-[14px] leading-[24px]" : "opacity-[0] translate-y-[-60%]"}`}>
-                {currencyFormatter(product.price)}
+                {
+                    product.available ?
+                    currencyFormatter(product.price)
+                    :
+                    ""
+                }
             </p>
         </div> 
     )

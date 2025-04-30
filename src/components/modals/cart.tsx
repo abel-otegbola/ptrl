@@ -178,7 +178,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                             <Input placeholder="Email Address" label="Email Address" name="email" value={values.email} onChange={handleChange} type="email" error={touched.email ? errors.email : ""}  />
                             <Input placeholder="Phone Number" label="Phone Number" name="phoneNumber" value={values.phoneNumber} onChange={handleChange} type="text" error={touched.phoneNumber ? errors.phoneNumber : ""}  />
                             <Input placeholder="Delivery Address" label="Delivery Address" name="address" value={values.address} onChange={handleChange} type="text" error={touched.address ? errors.address : ""}  />
-                            <Dropdown placeholder="State" label="State" error={touched.state ? errors.state : ""} value={values.state} onChange={(value) => { setFieldValue("state", value); setShippingPrice(shippingStates.find(states => states.title === value)?.price || 0)}} 
+                            <Dropdown label="State" error={touched.state ? errors.state : ""} value={values.state} onChange={(value) => { setFieldValue("state", value); setShippingPrice(shippingStates.find(states => states.title === value)?.price || 0)}} 
                                 options={shippingStates.map(states => { return { id: states.id, title: states.title } })}   
                             />
                             <Input placeholder="City" label="City" name="city" value={values.city} onChange={handleChange} type="text" error={touched.city ? errors.city : ""}  />
