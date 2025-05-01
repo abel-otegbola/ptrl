@@ -9,6 +9,7 @@ export const paystack = async (
     accessCode: string, 
     email: string, 
     cart: ICart[], 
+    reference: string,
     amount: number, 
     values: { fullname: string; email: string; phoneNumber: string; address: string; state: string; city: string; }, 
     setStatus: (aug0: string) => void,

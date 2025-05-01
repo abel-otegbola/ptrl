@@ -25,7 +25,7 @@ export const useVerifyPayment = async (
             setPopup({ type: "error", msg: "Saving order failed" })
             setStatus("Saving order failed")
             localStorage.setItem("cart", "[]")  
-            sendOrderEmail(values, reference, "champepesings@gmail.com", "seller", cart)
+            sendOrderEmail(values, reference, "abeldeveloper2@gmail.com", "seller", cart)
             sendOrderEmail(values, reference, values.email, "buyer", cart)
         }
     }
