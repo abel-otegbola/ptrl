@@ -9,7 +9,7 @@ export const paystack = async (
     accessCode: string, 
     email: string, 
     cart: ICart[], 
-    reference: string, 
+    amount: number, 
     values: { fullname: string; email: string; phoneNumber: string; address: string; state: string; city: string; }, 
     setStatus: (aug0: string) => void,
     setPopup: (aug0: { type: string, msg: string }) => void,
@@ -29,7 +29,7 @@ export const paystack = async (
         await popup?.checkout({
             key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || "",
             email,
-            amount: (+totalPrice(cart) + 5000) * 100,
+            amount,
             reference: (Math.random() * 100000).toString(),
             onCancel: () => {
                 setPopup({ type: "error", msg: "Payment Cancelled." })

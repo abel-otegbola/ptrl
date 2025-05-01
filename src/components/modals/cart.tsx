@@ -143,7 +143,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                                     (response as PaystackResponse)?.data?.access_code, 
                                     values.email, 
                                     cart, 
-                                    (response as PaystackResponse)?.data?.reference, 
+                                    (+totalPrice(cart) + shippingPrice) * 100, 
                                     values, 
                                     setStatus, 
                                     setPopup,
