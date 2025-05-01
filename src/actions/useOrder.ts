@@ -25,7 +25,9 @@ export const updateSingleOrder = async (values: IOrder) => {
     try {
         await connectDB();
         const savedOrder = await Orders.updateOne({ _id: values.id }, values)
-        return JSON.parse(JSON.stringify(savedOrder));
+        return {
+            status: true
+        }
     }
     catch(e){
         return {

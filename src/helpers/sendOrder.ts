@@ -8,8 +8,12 @@ export const sendOrderEmail = async (
     reference: string,
     recipient: string,
     type: string,
-    cart: ICart[]
+    cart: ICart[],
+    shipping: number
     ) => { 
+        
+    emailjs.init({publicKey: process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY || ""});
+
     try {
     await emailjs.send(
         process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID || "",     // Email.js Service ID
@@ -30,7 +34,7 @@ export const sendOrderEmail = async (
             }
         }),
         phoneNumber: values.phoneNumber,
-        cost: {shipping: 5000, tax: 0, total: +totalPrice(cart) + 5000},
+        cost: {shipping: shipping, tax: 0, total: +totalPrice(cart) + 5000},
         address: `${values.address}, ${values.city}, ${values.state}`
     }
     );

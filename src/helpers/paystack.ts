@@ -15,7 +15,8 @@ export const paystack = async (
     setStatus: (aug0: string) => void,
     setPopup: (aug0: { type: string, msg: string }) => void,
     setData: (aug0: any) => void,
-    data: any
+    data: any,
+    shipping: number
 ) => {
     try {
         const initializePaystack = async () => {
@@ -50,7 +51,7 @@ export const paystack = async (
             onSuccess: async (response) => { 
                 setStatus("verifying")
                 setData({ ...data, response})
-                useVerifyPayment(response?.reference, values, cart, setStatus, setPopup)
+                useVerifyPayment(response?.reference, values, cart, setStatus, setPopup, shipping)
             }
         });
     }

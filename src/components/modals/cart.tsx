@@ -16,6 +16,7 @@ import { initializeTransaction } from "@/actions/useInitializePayment";
 import { Toaster, toast } from "react-hot-toast";
 import { useVerifyPayment } from "@/helpers/verifyPayment";
 import Dropdown from "../dropdown";
+import { createOrder } from "@/actions/useOrder";
 
 export interface PaystackResponse {
     status: boolean;
@@ -37,9 +38,6 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
 
     const cartRef = useOutsideClick(setOpen, false)
 
-    useEffect(() => {
-        emailjs.init(process.env.NEXT_PUBLIC_EMAIL_PRIVATE_KEY || "");
-    }, []);
 
     const shippingStates = [
         { id: 0, title: "Lagos (Yaba) - ₦3,500", price: 3500 },
@@ -85,7 +83,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
 
     const handleVerification = (e:FormEvent) => {
         e.preventDefault()
-        useVerifyPayment(data?.reference, data?.values, cart, setStatus, setPopup)
+        useVerifyPayment(data?.reference, data?.values, cart, setStatus, setPopup, shippingPrice)
     }
 
     return (
@@ -136,25 +134,33 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     validateOnBlur={true}
                     onSubmit={async ( values, { setSubmitting }) => {
                         try {
-                            const response = await initializeTransaction(values.email, ((+totalPrice(cart)) * 100).toString());
-                            setStatus("initiated")
-                            if((response as PaystackResponse)?.status) {
-                                await paystack(
-                                    (response as PaystackResponse)?.data?.access_code, 
-                                    values.email, 
-                                    cart, 
-                                    (response as PaystackResponse)?.data?.reference,
-                                    (+totalPrice(cart) + shippingPrice) * 100, 
-                                    values, 
-                                    setStatus, 
-                                    setPopup,
-                                    setData,
-                                    data
-                                )
-                                setData({ ...data, values })
+                            const newOrder = await createOrder({ ...values, order_items: cart, reference: "" } )
+                            if(newOrder?.status) {
+                                const response = await initializeTransaction(values.email, ((+totalPrice(cart)) * 100).toString());
+                                setStatus("initiated")
+                                if((response as PaystackResponse)?.status) {
+                                    await paystack(
+                                        (response as PaystackResponse)?.data?.access_code, 
+                                        values.email, 
+                                        cart, 
+                                        (response as PaystackResponse)?.data?.reference,
+                                        (+totalPrice(cart) + shippingPrice) * 100, 
+                                        values, 
+                                        setStatus, 
+                                        setPopup,
+                                        setData,
+                                        data, 
+                                        shippingPrice
+                                    )
+                                    setData({ ...data, values })
+                                }
+                                else {
+                                    setPopup({ type: "error", msg: "Couldn't initiate payment. Try again" })
+                                    setSubmitting(false)
+                                }
                             }
                             else {
-                                setPopup({ type: "error", msg: "Couldn't initiate payment. Try again" })
+                                setPopup({ type: "error", msg: "Order unsuccessful! " })
                                 setSubmitting(false)
                             }
                         } 

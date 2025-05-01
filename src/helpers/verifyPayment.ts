@@ -1,4 +1,4 @@
-import { createOrder } from "@/actions/useOrder"
+import { createOrder, updateSingleOrder } from "@/actions/useOrder"
 import { verifyPayment } from "@/actions/useVerifyPayment"
 import { PaystackResponse } from "@/components/modals/cart"
 import { ICart } from "@/interface/store"
@@ -9,28 +9,17 @@ export const useVerifyPayment = async (
     values: any, 
     cart: ICart[], 
     setStatus: (aug0: string) => void,
-    setPopup: (aug0: { type: string, msg: string }) => void
+    setPopup: (aug0: { type: string, msg: string }) => void,
+    shipping: number
 ) => {
-    const res = await verifyPayment(reference)
-
-    if((res as PaystackResponse)?.status) {
-        const newOrder = await createOrder({ ...values, order_items: cart, reference } )
-        if(newOrder?.status) {
-            setStatus("verified")
-            localStorage.setItem("cart", "[]")  
-            sendOrderEmail(values, reference, "champepesings@gmail.com", "seller", cart)
-            sendOrderEmail(values, reference, values.email, "buyer", cart)
-        }
-        else {
-            setPopup({ type: "error", msg: "Saving order failed" })
-            setStatus("Saving order failed")
-            localStorage.setItem("cart", "[]")  
-            sendOrderEmail(values, reference, "abeldeveloper2@gmail.com", "seller", cart)
-            sendOrderEmail(values, reference, values.email, "buyer", cart)
-        }
+    const updateOrder = await updateSingleOrder({ ...values, order_items: cart, reference } )
+    if(updateOrder?.status) {
+        setPopup({ type: "success", msg: "Order updated successfully" })
     }
     else {
-        setPopup({ type: "error", msg: "Verification Unsuccessful." })
-        setStatus("Verification failed")
+        setPopup({ type: "error", msg: "Couldn't update order. Try again" })
     }
+    localStorage.setItem("cart", "[]")  
+    sendOrderEmail(values, reference, "champepesings@gmail.com", "seller", cart, shipping)
+    sendOrderEmail(values, reference, values.email, "buyer", cart, shipping)
 }
