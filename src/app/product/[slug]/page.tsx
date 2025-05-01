@@ -78,6 +78,7 @@ export default function ProductPage() {
                                                 key={size} 
                                                 className={`cursor-pointer border border-black md:px-4 px-3 py-[4px] uppercase leading-[24px] hover:bg-black hover:text-white duration-500
                                                 ${selectedSize === size ? "bg-black text-white" : "border black"}
+                                                ${ (product?.title === "WHITE GARAGE TEE" && size === "L" ) ? "" : "hidden"}
                                                 `}
                                                 onClick={() => { changeVariation("size", product?.id || "", size); setSelectedSize(size)}}
                                             >
