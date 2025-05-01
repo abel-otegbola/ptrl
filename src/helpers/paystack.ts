@@ -30,7 +30,7 @@ export const paystack = async (
             key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || "",
             email,
             amount: (+totalPrice(cart) + 5000) * 100,
-            reference,
+            reference: (Math.random() * 100000).toString(),
             onCancel: () => {
                 setPopup({ type: "error", msg: "Payment Cancelled." })
                 return {
@@ -39,6 +39,7 @@ export const paystack = async (
                 }
             },
             onError: (error) => {
+                console.log(error)
                 setPopup({ type: "error", msg: "Payment Unsuccessful." })
                 return {
                     status: error,
