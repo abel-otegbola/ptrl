@@ -27,7 +27,7 @@ export default function Footer() {
                 <p className="uppercase">Follow us</p>
                 <div className="flex items-center md:gap-8 gap-4 text-[#C22026] uppercase">
                     <Link href={"https://www.instagram.com/ptrlstudios"} className=""><img src="/instagram.svg" width={25} height={25} alt="instagram"  /></Link>
-                    <Link href={"https://api.whatsapp.com/+239041356782"} className=""><img src="/whatsapp.svg" width={25} height={25} alt="whatsapp"  /></Link>
+                    <Link href={"https://wa.me/239041356782"} className=""><img src="/whatsapp.svg" width={25} height={25} alt="whatsapp"  /></Link>
                 </div>
             </div>
 
