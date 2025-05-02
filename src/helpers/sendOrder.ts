@@ -28,23 +28,23 @@ export const sendOrderEmail = async (
             return { 
                 name: products.find(element => element.id === item.id)?.title, 
                 price: products.find(element => element.id === item.id)?.price, 
-                image_url: `https://ptrl.vercel.app${products.find(element => element.id === item.id)?.img}`, 
+                image_url: `https://ptrlstudios.com${products.find(element => element.id === item.id)?.img}`, 
                 quantity: item.quantity, 
                 size: item.variation.size, 
             }
         }),
         phoneNumber: values.phoneNumber,
-        cost: {shipping: shipping, tax: 0, total: +totalPrice(cart) + 5000},
+        cost: {shipping: shipping, tax: 0, total: +totalPrice(cart) + shipping},
         address: `${values.address}, ${values.city}, ${values.state}`
     }
     );
     } catch (error) {
         console.error('Failed to send email:', error);
-        // window.location.replace("/")
+        window.location.replace("/")
     } finally {
         console.log("email sent")
         if (type === "buyer") {
-            // window.location.replace("/")
+            window.location.replace("/")
         }
     }
 };

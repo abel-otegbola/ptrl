@@ -2,11 +2,18 @@ import { currencyFormatter } from "@/helpers/currencyFormatter";
 import Link from "next/link";
 import { products } from "@/data/products";
 import { IOrder } from "@/interface/store";
+import { sendOrderEmail } from "@/helpers/sendOrder";
+import { shippingStates } from "@/data/shippingStates";
 
 export default function DataTable({ headers, data, isLoading }: { headers: string[], data: IOrder[], isLoading: boolean }) {
 
+    const handleSendEmail = (order: IOrder) => {
+        sendOrderEmail(order, "", "champepesings@gmail.com", "seller", order.order_items, shippingStates.find(item => item.title === order.state)?.price || 0)
+    }
+
     return (
         <table className="table-auto text-left md:text-[12px] text-[10px] w-full">
+            
             <thead>
                 <tr className="font-medium text-[10px] uppercase border border-transparent border-b-gray-400/[0.2]">
                     {
@@ -24,26 +31,26 @@ export default function DataTable({ headers, data, isLoading }: { headers: strin
                             {
                                 headers.map((header, i) => (
                                     header === "Id" ?
-                                    <td key={i} className="p-2 max-w-[100px] truncate"><Link href={`/dashboard/order?id=${order?.id}`}>{order?.id}</Link></td>
+                                    <td key={i} className="p-2 max-w-[100px] truncate"><Link href={`/admin/order?id=${order?._id}`}>{order?._id}</Link></td>
                                     :
                                     header === "Date" ?
                                     <td key={i}>{new Date(order?.updatedAt || "").toLocaleDateString("GB")}</td>
                                     :
                                     header === "Fullname" ?
-                                    <td key={i}>{order?.fullname}</td>
+                                    <td className="p-2" key={i}>{order?.fullname}</td>
                                     :
                                     header === "Email" ?
-                                    <td key={i}>{order?.email}</td>
+                                    <td className="p-2" key={i}>{order?.email}</td>
                                     :
                                     header === "Phone Number" ?
-                                    <td key={i}>{order?.phoneNumber}</td>
+                                    <td className="p-2 min-w-[120px]" key={i}>{order?.phoneNumber}</td>
                                     :
                                     header === "Date" ?
-                                    <td key={i}>{new Date(order?.updatedAt || "").toLocaleDateString("GB")}</td>
+                                    <td className="p-2" key={i}>{new Date(order?.updatedAt || "").toLocaleDateString("GB")}</td>
                                     :
                                     header === "Order Items" ?
-                                    <td key={i} className="p-2 text-[10px]">
-                                        <Link href={`/dashboard/order?id=${order?.id}`}>
+                                    <td key={i} className="p-2 text-[10px] min-w-[240px]">
+                                        <Link href={`/admin/order?id=${order?._id}`}>
                                         <ol className="">
                                         {
                                             order?.order_items.map(item => products.filter(product => product.id === item?.id)[0]).map(order => (
@@ -58,6 +65,11 @@ export default function DataTable({ headers, data, isLoading }: { headers: strin
                                     :
                                     header === "Total" ?
                                     <td key={i} className="p-2">
+                                    </td>
+                                    :
+                                    header === "Actions" ?
+                                    <td className="p-2 md:text-[12px] text-[10px] min-w-[120px]" key={i}>
+                                        <button className="border rounded p-1 px-2 cursor-pointer" onClick={() => handleSendEmail(order)}>Send to mail</button>
                                     </td>
                                     
                                     : ""

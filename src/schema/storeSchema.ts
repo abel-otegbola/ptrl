@@ -8,3 +8,8 @@ export const orderSchema = Yup.object({
     state: Yup.string().required("State is required"), 
     city: Yup.string().required("City is required"),
 })
+
+export const loginSchema = Yup.object({
+    email: Yup.string().required('Email is required'),
+    password: Yup.string().required("Password is required"),
+})

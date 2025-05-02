@@ -24,7 +24,7 @@ export const createOrder = async (values: IOrder) => {
 export const updateSingleOrder = async (values: IOrder) => {
     try {
         await connectDB();
-        const savedOrder = await Orders.updateOne({ _id: values.id }, values)
+        const savedOrder = await Orders.updateOne({ _id: values._id }, values)
         return {
             status: true
         }

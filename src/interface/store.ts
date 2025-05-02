@@ -2,7 +2,7 @@ export interface ICart {
     id: string, quantity: number, variation: { size: string }
 }
 export interface IOrder {
-    id?: string,
+    _id?: string,
     fullname: string, 
     email: string, 
     phoneNumber: string, 
