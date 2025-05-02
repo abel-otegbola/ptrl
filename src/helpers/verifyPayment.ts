@@ -1,6 +1,4 @@
-import { createOrder, updateSingleOrder } from "@/actions/useOrder"
-import { verifyPayment } from "@/actions/useVerifyPayment"
-import { PaystackResponse } from "@/components/modals/cart"
+import { updateSingleOrder } from "@/actions/useOrder"
 import { ICart } from "@/interface/store"
 import { sendOrderEmail } from "./sendOrder"
 
@@ -10,9 +8,10 @@ export const useVerifyPayment = async (
     cart: ICart[], 
     setStatus: (aug0: string) => void,
     setPopup: (aug0: { type: string, msg: string }) => void,
-    shipping: number
+    shipping: number,
+    _id: string
 ) => {
-    const updateOrder = await updateSingleOrder({ ...values, order_items: cart, reference } )
+    const updateOrder = await updateSingleOrder({ _id, ...values, order_items: cart, reference, order_status: "Payment Successful" } )
     if(updateOrder?.status) {
         setPopup({ type: "success", msg: "Order updated successfully" })
     }

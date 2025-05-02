@@ -38,7 +38,11 @@ const orderSchema = new mongoose.Schema({
             variation: { color: String, size: String },
         }],
         required: false
-    }
+    },
+    order_status: {
+        type: String,
+        required: false
+    },
 },
   {
     timestamps: true,

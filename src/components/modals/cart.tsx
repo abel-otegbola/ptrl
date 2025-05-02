@@ -34,7 +34,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
     const [animate, setAnimate] = useState(false)
     const [status, setStatus] = useState("")
     const [popup, setPopup] = useState({ type: "", msg: "" });
-    const [data, setData] = useState({ reference: "", values: {} })
+    const [data, setData] = useState({ reference: "", values: { }, _id: "" })
     const [shippingPrice, setShippingPrice] = useState(3500)
 
     const cartRef = useOutsideClick(setOpen, false)
@@ -62,7 +62,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
 
     const handleVerification = (e:FormEvent) => {
         e.preventDefault()
-        useVerifyPayment(data?.reference, data?.values, cart, setStatus, setPopup, shippingPrice)
+        useVerifyPayment(data?.reference, data?.values, cart, setStatus, setPopup, shippingPrice, data?._id)
     }
 
     return (
@@ -113,7 +113,7 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                     validateOnBlur={true}
                     onSubmit={async ( values, { setSubmitting }) => {
                         try {
-                            const newOrder = await createOrder({ ...values, order_items: cart, reference: "" } )
+                            const newOrder = await createOrder({ ...values, order_items: cart, reference: "", order_status: "Pending" } )
                             if(newOrder?.status) {
                                 const response = await initializeTransaction(values.email, ((+totalPrice(cart)) * 100).toString());
                                 setStatus("initiated")
@@ -129,9 +129,10 @@ export default function Cart({ open, setOpen }: { open: boolean, setOpen: (aug0:
                                         setPopup,
                                         setData,
                                         data, 
-                                        shippingPrice
+                                        shippingPrice,
+                                        newOrder?.data._id
                                     )
-                                    setData({ ...data, values })
+                                    setData({ ...data, values, _id: newOrder?.data._id })
                                 }
                                 else {
                                     setPopup({ type: "error", msg: "Couldn't initiate payment. Try again" })

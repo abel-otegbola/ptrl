@@ -10,7 +10,8 @@ export const createOrder = async (values: IOrder) => {
         const order = new Orders(values);
         const savedOrder = await order.save();
         return {
-            status: true
+            status: true,
+            data: JSON.parse(JSON.stringify(savedOrder))
         }
     }
     catch(e){
@@ -51,19 +52,6 @@ export const getAllUserOrders = async (email: string) => {
     try {
         await connectDB();
         const findResult = await Orders.find({ customer_email: email })
-        return JSON.parse(JSON.stringify(findResult))
-    }
-    catch(e){
-        
-    }
-}
-
-export const getAllBusinessOrders = async (store: string) => {
-    try {
-        await connectDB();
-        const findResult = await Orders.find({
-            'order_items.seller': store,
-        })
         return JSON.parse(JSON.stringify(findResult))
     }
     catch(e){
