@@ -1,15 +1,11 @@
 'use client'
-import { deleteOrder, getAllOrders } from "@/actions/useOrder"
+import { getAllOrders } from "@/actions/useOrder"
 import DataTable from "@/components/dataTable"
 import { IOrder } from "@/interface/store"
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function AdminPage() {
     const [orders, setOrders] = useState<IOrder[]>([])
-    const [selectedOrder, setSelectedOrder] = useState<string[]>([])
-    const router = useRouter()
 
     useEffect(() => {
         getAllOrders()
@@ -20,12 +16,6 @@ export default function AdminPage() {
             console.log(error)
         })
     }, [])
-
-    const handleDeleteOrders = () => {
-        selectedOrder.map(item => (
-            deleteOrder(item)
-        ))
-    }
 
     return (
         <div className="md:px-12 px-4">

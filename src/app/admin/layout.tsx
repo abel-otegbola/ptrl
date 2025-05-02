@@ -27,8 +27,8 @@ export default function Layout({
         <div className="flex flex-col gap-4">
             <div className="md:mx-12 mx-4 mb-6 py-6 border-b border-gray-200">
               <p className="text-[16px] font-semibold">Welcome Admin</p>
-              <div className="flex justify-between items-center gap-6 flex-wrap">
-                <div className="flex gap-2 mt-6">
+              <div className="flex justify-between items-center gap-6 flex-wrap mt-6">
+                <div className="flex gap-2 items-center">
                   <Link href={"/admin"} className="rounded p-1 px-2 text-[12px] border rounded">View orders</Link>
                   <Link href={"/admin/products"} className="rounded p-1 px-2 text-[12px] border rounded">View products</Link>
                 </div>

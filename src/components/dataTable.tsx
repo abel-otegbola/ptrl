@@ -3,6 +3,7 @@ import { products } from "@/data/products";
 import { IOrder } from "@/interface/store";
 import { sendOrderEmail } from "@/helpers/sendOrder";
 import { shippingStates } from "@/data/shippingStates";
+import { deleteOrder } from "@/actions/useOrder";
 
 export default function DataTable({ headers, data, isLoading }: { headers: string[], data: IOrder[], isLoading: boolean }) {
 
@@ -67,8 +68,9 @@ export default function DataTable({ headers, data, isLoading }: { headers: strin
                                     </td>
                                     :
                                     header === "Actions" ?
-                                    <td className="p-2 md:text-[12px] text-[10px] min-w-[120px]" key={i}>
+                                    <td className="p-2 md:text-[12px] text-[10px] min-w-[120px] flex gap-2 " key={i}>
                                         <button className="border rounded p-1 px-2 cursor-pointer" onClick={() => handleSendEmail(order)}>Send to mail</button>
+                                        <button className="border border-red-500 text-red-600 rounded p-1 px-2 cursor-pointer hidden" onClick={() => deleteOrder(order._id || "")}>Delete</button>
                                     </td>
                                     
                                     : ""

@@ -40,9 +40,9 @@ export default function OrderSummary() {
     }, [id])
 
     return (
-        <div className="gap-[5%] min-h-[100vh] md:px-12 px-4 py-[40px]">
-            <div className="items-center h-[80px]">
-                <h2 className="font-bold text-[28px] uppercase">Order</h2>
+        <div className="gap-[5%] min-h-[100vh] md:px-12 px-4">
+            <div className="items-center h-[40px]">
+                <h2 className="font-bold text-[20px] uppercase">Order</h2>
             </div>
 
             <div className="flex flex-wrap items-start gap-6">
