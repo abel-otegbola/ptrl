@@ -67,10 +67,15 @@ export default function DataTable({ headers, data, isLoading }: { headers: strin
                                     <td key={i} className="p-2">
                                     </td>
                                     :
+                                    header === "Status" ?
+                                    <td key={i} className="p-2">
+                                        {order?.order_status}
+                                    </td>
+                                    :
                                     header === "Actions" ?
                                     <td className="p-2 md:text-[12px] text-[10px] min-w-[120px] flex gap-2 " key={i}>
                                         <button className="border rounded p-1 px-2 cursor-pointer" onClick={() => handleSendEmail(order)}>Send to mail</button>
-                                        <button className="border border-red-500 text-red-600 rounded p-1 px-2 cursor-pointer hidden" onClick={() => deleteOrder(order._id || "")}>Delete</button>
+                                        <button className="border border-red-500 text-red-600 rounded p-1 px-2 cursor-pointer" onClick={() => deleteOrder(order._id || "")}>Delete</button>
                                     </td>
                                     
                                     : ""

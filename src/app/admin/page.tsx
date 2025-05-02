@@ -25,7 +25,7 @@ export default function AdminPage() {
             </div>
             <div className="w-full overflow-x-auto min-h-[400px] rounded-lg border border-gray-500/[0.1] bg-gray-100/[0.08]">
                 <div>
-                    <DataTable isLoading={false} data={orders} headers={["Fullname", "Email", "Phone Number", "Order Items", "Actions"]} />
+                    <DataTable isLoading={false} data={orders} headers={["Fullname", "Email", "Phone Number", "Order Items", "Status", "Actions"]} />
                 </div>
             </div>
         </div>
