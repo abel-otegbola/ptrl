@@ -1,4 +1,3 @@
-import { currencyFormatter } from "@/helpers/currencyFormatter";
 import Link from "next/link";
 import { products } from "@/data/products";
 import { IOrder } from "@/interface/store";
@@ -8,7 +7,7 @@ import { shippingStates } from "@/data/shippingStates";
 export default function DataTable({ headers, data, isLoading }: { headers: string[], data: IOrder[], isLoading: boolean }) {
 
     const handleSendEmail = (order: IOrder) => {
-        sendOrderEmail(order, "", "abeldeveloper2@gmail.com", "seller", order.order_items, shippingStates.find(item => item.title === order.state)?.price || 0)
+        sendOrderEmail(order, "", "champepesings@gmail.com", "seller", order.order_items, shippingStates.find(item => item.title === order.state)?.price || 0)
     }
 
     return (
@@ -37,10 +36,10 @@ export default function DataTable({ headers, data, isLoading }: { headers: strin
                                     <td key={i}>{new Date(order?.updatedAt || "").toLocaleDateString("GB")}</td>
                                     :
                                     header === "Fullname" ?
-                                    <td className="p-2" key={i}>{order?.fullname}</td>
+                                    <td className="p-2" key={i}><Link href={`/admin/order?id=${order?._id}`}>{order?.fullname}</Link></td>
                                     :
                                     header === "Email" ?
-                                    <td className="p-2" key={i}>{order?.email}</td>
+                                    <td className="p-2" key={i}><Link href={`/admin/order?id=${order?._id}`}>{order?.email}</Link></td>
                                     :
                                     header === "Phone Number" ?
                                     <td className="p-2 min-w-[120px]" key={i}>{order?.phoneNumber}</td>
