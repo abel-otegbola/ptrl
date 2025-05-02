@@ -8,7 +8,7 @@ import { shippingStates } from "@/data/shippingStates";
 export default function DataTable({ headers, data, isLoading }: { headers: string[], data: IOrder[], isLoading: boolean }) {
 
     const handleSendEmail = (order: IOrder) => {
-        sendOrderEmail(order, "", "champepesings@gmail.com", "seller", order.order_items, shippingStates.find(item => item.title === order.state)?.price || 0)
+        sendOrderEmail(order, "", "abeldeveloper2@gmail.com", "seller", order.order_items, shippingStates.find(item => item.title === order.state)?.price || 0)
     }
 
     return (
