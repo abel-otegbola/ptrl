@@ -10,5 +10,6 @@ export interface IOrder {
     state: string, 
     city: string,
     order_items: ICart[], 
-    reference: string
+    reference: string,
+    updatedAt?: string,
 }

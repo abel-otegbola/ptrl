@@ -40,11 +40,11 @@ export const sendOrderEmail = async (
     );
     } catch (error) {
         console.error('Failed to send email:', error);
-        window.location.replace("/")
+        // window.location.replace("/")
     } finally {
         console.log("email sent")
         if (type === "buyer") {
-            window.location.replace("/")
+            // window.location.replace("/")
         }
     }
 };
