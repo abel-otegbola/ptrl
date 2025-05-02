@@ -42,7 +42,7 @@ const AuthProvider = ({ children }: { children: ReactNode}) => {
         setUser(null)
         signOut()
         .then(() => {
-            router.push("/login")
+            router.push("/admin")
         })
         .catch((e) => {
             setPopup({ type: "error", msg: "Couldn't sign out, please try again." })
@@ -60,7 +60,6 @@ const AuthProvider = ({ children }: { children: ReactNode}) => {
 
     return (
         <AuthContext.Provider value={{ popup, loading, login, logOut }}>
-            <Toaster containerClassName="p-8" />
             <SessionProvider>
                 {children}
             </SessionProvider>
