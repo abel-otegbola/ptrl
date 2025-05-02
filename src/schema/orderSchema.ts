@@ -39,7 +39,11 @@ const orderSchema = new mongoose.Schema({
         }],
         required: false
     }
-});
+},
+  {
+    timestamps: true,
+  }
+);
 
 const Orders = mongoose.models?.Orders || model('Orders', orderSchema);
 export default Orders;

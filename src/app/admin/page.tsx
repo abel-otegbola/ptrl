@@ -9,7 +9,6 @@ import { useEffect, useState } from "react"
 export default function AdminPage() {
     const [orders, setOrders] = useState<IOrder[]>([])
     const [selectedOrder, setSelectedOrder] = useState<string[]>([])
-    const { data } = useSession()
     const router = useRouter()
 
     useEffect(() => {
@@ -29,9 +28,9 @@ export default function AdminPage() {
     }
 
     return (
-        <div className="md:px-12 px-4 py-[40px]">
+        <div className="md:px-12 px-4">
             <div className="items-center h-[80px]">
-                <h2 className="font-bold text-[28px] uppercase">Orders</h2>
+                <h2 className="font-bold text-[20px] uppercase">Orders</h2>
                 <p>Manage your orders</p>
             </div>
             <div className="w-full overflow-x-auto min-h-[400px] rounded-lg border border-gray-500/[0.1] bg-gray-100/[0.08]">
