@@ -76,6 +76,23 @@ export default function OrderSummary() {
                         </h2>
                     </div>
 
+                    <div className="flex flex-col gap-2 mb-4">
+                        <h1 className="font-semibold border-b border-gray-200 text-[16px] mt-4">Order Status:</h1>
+
+                        <h2 className="grid grid-cols-4 items-center gap-1 flex justify-between">
+                            
+                            {  
+                                ["Pending", "Payment Successful", "Processed", "Delivered"].map(status => (
+                                    <button 
+                                        key={status} 
+                                        className={`w-full px-2 py-1 text-[12px] rounded ${order?.order_status === status ? "bg-[#C22026]" : "border border-gray-400"}`}
+                                        onClick={() => updateSingleOrder({ ...order, order_status: status })}
+                                    >{status}</button>
+                                ))
+                            }
+                        </h2>
+                    </div>
+
                 </div>
 
                 <div className="flex flex-col gap-6 md:w-[40%] w-full p-4 my-4 bg-gray-300/[0.08] border border-gray-500/[0.2]">

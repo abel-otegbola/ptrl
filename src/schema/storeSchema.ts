@@ -13,3 +13,11 @@ export const loginSchema = Yup.object({
     email: Yup.string().required('Email is required'),
     password: Yup.string().required("Password is required"),
 })
+
+export const productSchema = Yup.object({
+    title: Yup.string().required("Name is required"),
+    description: Yup.string().required('description is required'),
+    price: Yup.string().required("Price is required"), 
+    img: Yup.string().required("Image is required"), 
+    category: Yup.string().required("Category is required"),
+})
