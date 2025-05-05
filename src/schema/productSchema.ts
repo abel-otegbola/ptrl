@@ -3,6 +3,10 @@ import { model } from "mongoose";
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
@@ -16,7 +20,11 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     img: {
-        type: [ String ],
+        type: String,
+        required: false
+    },
+    img2: {
+        type: String,
         required: false
     },
     available: {

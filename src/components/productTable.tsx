@@ -2,6 +2,8 @@ import Link from "next/link";
 import { IProduct } from "@/interface/store";
 import Toggle from "./toggle";
 import Input from "./input";
+import { products } from "@/data/products";
+import { updateSingleProduct } from "@/actions/useProducts";
 
 type ProductTableProps = { headers: string[], data: IProduct[], isLoading: boolean, handleUpdate: (index: string, value: string | number | boolean | string[], product: IProduct) => void }
 
@@ -45,7 +47,7 @@ export default function ProductTable({ headers, data, isLoading, handleUpdate }:
                                     :
                                     header === "Actions" ?
                                     <td className="p-2 md:text-[12px] text-[10px] min-w-[120px] flex gap-2 " key={i}>
-                                        <button className="border rounded p-1 px-2 cursor-pointer" onClick={() => {}}>Create Product</button>
+                                        <button className="border rounded p-1 px-2 cursor-pointer" onClick={() => updateSingleProduct({...(products.filter(item => item.title === product.title)[0]), _id: product._id})}>Update Product</button>
                                     </td>
                                     :
                                     header === "Sizes" ?

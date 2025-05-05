@@ -58,7 +58,7 @@ export default function ProductsPage() {
             </div>
             <div className="w-full overflow-x-auto min-h-[400px] rounded-lg border border-gray-500/[0.1] bg-gray-100/[0.08]">
                 <div>
-                    <ProductTable isLoading={false} data={products} headers={["Name", "Category", "Available", "Inventory", "Sizes" ]} handleUpdate={handleUpdate} />
+                    <ProductTable isLoading={false} data={products} headers={["Name", "Category", "Available", "Inventory", "Sizes", "Actions" ]} handleUpdate={handleUpdate} />
                 </div>
             </div>
         </div>

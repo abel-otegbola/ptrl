@@ -11,6 +11,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Image from "next/image";
+import { getSingleProduct } from "@/actions/useProducts";
 
 export default function ProductPage() {
     const { slug } = useParams();
@@ -23,10 +24,20 @@ export default function ProductPage() {
     const [selectedSize, setSelectedSize] = useState("L")
     
     useEffect(() => {
-        setProduct(products?.filter(item => item.id === slug)[0])
         setSelectedSize(cart?.filter((item: ICart) => item.id !== product?.id)[0]?.variation.size || selectedSize)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [slug])
+
+    useEffect(() => {
+        getSingleProduct(slug?.toString() || "0")
+        .then(response => {
+            console.log(response)
+            setProduct(response)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }, [])
 
     const settings = {
         dots: true,
@@ -47,12 +58,12 @@ export default function ProductPage() {
                         product?.category === "tee" ?
                         <Slider {...settings} className="w-full rounded-lg max-w-[92vw]">
                             {[product?.img, product?.img2].map((img, index) => (
-                                <Image src={img} alt={product.title} key={index} width={2400} height={2400} className={`pb-12 w-full rounded-lg bg-cover bg-center`} 
+                                <Image src={img} alt={product?.title} key={index} width={2400} height={2400} className={`pb-12 w-full rounded-lg bg-cover bg-center`} 
                                 />
                             ))}
                         </Slider>
                         :
-                        <Image src={product?.img} alt={product.title} width={2400} height={2400} className={`pb-12 w-full rounded-lg bg-cover bg-center`} 
+                        <Image src={product?.img} alt={product?.title} width={2400} height={2400} className={`pb-12 w-full rounded-lg bg-cover bg-center`} 
                         />
                     }
                 </div>

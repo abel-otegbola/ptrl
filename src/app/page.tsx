@@ -1,8 +1,22 @@
 'use client'
+import { useEffect, useState } from "react";
 import ProductCard from "../components/productCard";
-import { products } from "../data/products";
+import { IProduct } from "@/interface/store";
+import { getAllProducts } from "@/actions/useProducts";
 
 export default function HomePage() {
+    const [products, setProducts] = useState<IProduct[]>([])
+
+    useEffect(() => {
+        getAllProducts()
+        .then(response => {
+            console.log(response)
+            setProducts(response)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }, [])
 
     return (
         <main className="">

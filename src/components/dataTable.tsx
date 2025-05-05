@@ -37,7 +37,7 @@ export default function DataTable({ headers, data, isLoading }: { headers: strin
                                     <td key={i}>{new Date(order?.updatedAt || "").toLocaleDateString("GB")}</td>
                                     :
                                     header === "Fullname" ?
-                                    <td className="p-2" key={i}><Link href={`/admin/order?id=${order?._id}`}>{order?.fullname}</Link></td>
+                                    <td className="p-2 min-w-[160px]" key={i}><Link href={`/admin/order?id=${order?._id}`}>{order?.fullname}</Link></td>
                                     :
                                     header === "Email" ?
                                     <td className="p-2" key={i}><Link href={`/admin/order?id=${order?._id}`}>{order?.email}</Link></td>
@@ -49,7 +49,7 @@ export default function DataTable({ headers, data, isLoading }: { headers: strin
                                     <td className="p-2" key={i}>{new Date(order?.updatedAt || "").toLocaleDateString("GB")}</td>
                                     :
                                     header === "Order Items" ?
-                                    <td key={i} className="p-2 text-[10px] min-w-[240px]">
+                                    <td key={i} className="p-2 text-[10px] min-w-[200px]">
                                         <Link href={`/admin/order?id=${order?._id}`}>
                                         <ol className="">
                                         {
@@ -73,7 +73,7 @@ export default function DataTable({ headers, data, isLoading }: { headers: strin
                                     </td>
                                     :
                                     header === "Actions" ?
-                                    <td className="p-2 md:text-[12px] text-[10px] min-w-[120px] flex gap-2 " key={i}>
+                                    <td className="p-2 md:text-[12px] text-[10px] min-w-[180px] flex gap-2 " key={i}>
                                         <button className="border rounded p-1 px-2 cursor-pointer" onClick={() => handleSendEmail(order)}>Send to mail</button>
                                         <button className="border border-red-500 text-red-600 rounded p-1 px-2 cursor-pointer" onClick={() => deleteOrder(order._id || "")}>Delete</button>
                                     </td>
