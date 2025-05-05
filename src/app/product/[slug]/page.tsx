@@ -2,8 +2,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useIsVisible } from "../../../helpers/isVisible";
 import { StoreContext } from "../../../context/useStore";
-import { products } from "../../../data/products";
-import { ICart } from "../../../interface/store";
+import { ICart, IProduct } from "../../../interface/store";
 import { currencyFormatter } from "../../../helpers/currencyFormatter";
 import ProductCard from "../../../components/productCard";
 import { useParams } from "next/navigation";
@@ -11,7 +10,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Image from "next/image";
-import { getSingleProduct } from "@/actions/useProducts";
+import { getAllProducts, getSingleProduct } from "@/actions/useProducts";
 
 export default function ProductPage() {
     const { slug } = useParams();
@@ -21,7 +20,18 @@ export default function ProductPage() {
     const ref2 = useRef<HTMLDivElement>(null)
     const isVisible2 = useIsVisible(ref2);
     const { cart, addToCart,changeQuantity, removeFromCart, changeVariation, setOpenCart } = useContext(StoreContext)
-    const [selectedSize, setSelectedSize] = useState("L")
+    const [selectedSize, setSelectedSize] = useState("L")    
+    const [products, setProducts] = useState<IProduct[]>([])
+    
+        useEffect(() => {
+            getAllProducts()
+            .then(response => {
+                setProducts(response)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }, [])
     
     useEffect(() => {
         setSelectedSize(cart?.filter((item: ICart) => item.id !== product?.id)[0]?.variation.size || selectedSize)
@@ -31,7 +41,6 @@ export default function ProductPage() {
     useEffect(() => {
         getSingleProduct(slug?.toString() || "0")
         .then(response => {
-            console.log(response)
             setProduct(response)
         })
         .catch(error => {
@@ -105,7 +114,7 @@ export default function ProductPage() {
             
                         <div ref={ref2} className="flex flex-col gap-4 pb-2 w-full">
                             {
-                            product.available ?
+                            product?.available ?
                             cart?.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
                             <button 
                                 className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
@@ -140,7 +149,7 @@ export default function ProductPage() {
                             <p className="border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-center text-white p-6 py-4 rounded-lg uppercase">Coming soon</p>
                             }
                             {
-                            product.available ? 
+                            product?.available ? 
                             <button 
                                 className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
                                 onClick={cart?.find(element => element.id === product?.id) ? () => setOpenCart(true) : () => { 

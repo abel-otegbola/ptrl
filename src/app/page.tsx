@@ -10,7 +10,6 @@ export default function HomePage() {
     useEffect(() => {
         getAllProducts()
         .then(response => {
-            console.log(response)
             setProducts(response)
         })
         .catch(error => {
@@ -22,7 +21,7 @@ export default function HomePage() {
         <main className="">
             <section className="md:px-12 px-4 py-12 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3 grid-cols-2 md:gap-4 gap-2">
                 {
-                    products.map(product => (
+                    products?.map(product => (
                         <ProductCard key={product.id} product={product} />
                     ))
                 }
