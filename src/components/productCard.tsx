@@ -22,7 +22,7 @@ export default function ProductCard({ product }: {product: IProduct}) {
                     </div>
                 } */}
                 <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full bg-black/[0.2] rounded-lg">
-                    <p className="text-white">Product sold out</p>
+                    <p className="text-white">Sold out</p>
                 </div>
             </Link>
             <Link href={`/product/${product._id}`} className={`text-center uppercase md:w-[75%] font-bold md:leading-[24px] leading-[16px] md:text-[15px] text-[12px] duration-700 ${isVisible ? "translate-y-[0%] opacity-[1]" : "opacity-[0] translate-y-[-40%]"}`}>{product.title}</Link>

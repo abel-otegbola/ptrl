@@ -148,7 +148,7 @@ export default function ProductPage() {
                             :
                             <p className="border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-center text-white p-6 py-4 rounded-lg uppercase">
                                 {/* Coming soon */}
-                                Product is sold out
+                                Sold out
                             </p>
                             }
                             {
