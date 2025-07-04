@@ -81,9 +81,10 @@ export default function ProductPage() {
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-3 md:text-[16px] text-[14px]">
                                 <p className={`uppercase font-bold duration-700`}>{product?.title}</p>
-                                <p className={`font-medium`}>{ product?.available ? currencyFormatter(product.price) : "Coming soon"}</p>
+                                {/* <p className={`font-medium`}>{ product?.available ? currencyFormatter(product.price) : "Coming soon"}</p> */}
+                                <p className={`font-medium`}>Sold out</p>
                             </div>
-                            <p className="uppercase text-[#989898]">{  product?.available ? "all items in stock" : "" }</p>
+                            {/* <p className="uppercase text-[#989898]">{  product?.available ? "all items in stock" : "" }</p> */}
 
                         </div>
 
