@@ -88,7 +88,7 @@ export default function ProductPage() {
                         </div>
 
                         {
-                            product?.available && product?.category === "tee" ? 
+                            product?.available && product?.category === "tee" || false ? 
                             <div className="flex flex-col gap-2 pb-12">
                                 <p className="uppercase text-[#989898]">size</p>
                                 <div className="flex md:gap-6 gap-3 items-center">
@@ -114,7 +114,7 @@ export default function ProductPage() {
             
                         <div ref={ref2} className="flex flex-col gap-4 pb-2 w-full">
                             {
-                            product?.available ?
+                            product?.available || false ?
                             cart?.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
                             <button 
                                 className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
@@ -146,10 +146,13 @@ export default function ProductPage() {
                                 </button>
                             </div> 
                             :
-                            <p className="border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-center text-white p-6 py-4 rounded-lg uppercase">Coming soon</p>
+                            <p className="border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-center text-white p-6 py-4 rounded-lg uppercase">
+                                {/* Coming soon */}
+                                Product is sold out
+                            </p>
                             }
                             {
-                            product?.available ? 
+                            product?.available || false ? 
                             <button 
                                 className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
                                 onClick={cart?.find(element => element.id === product?.id) ? () => setOpenCart(true) : () => { 
