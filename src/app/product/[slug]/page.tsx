@@ -81,15 +81,15 @@ export default function ProductPage() {
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-3 md:text-[16px] text-[14px]">
                                 <p className={`uppercase font-bold duration-700`}>{product?.title}</p>
-                                {/* <p className={`font-medium`}>{ product?.available ? currencyFormatter(product.price) : "Coming soon"}</p> */}
-                                <p className={`font-medium`}>Sold out</p>
+                                <p className={`font-medium`}>{ product?.available ? currencyFormatter(product.price) : "Coming soon"}</p>
                             </div>
-                            {/* <p className="uppercase text-[#989898]">{  product?.available ? "all items in stock" : "" }</p> */}
+                            <p className="uppercase text-[#989898]">{  product?.available ? "Sold out" : "" }</p> 
+                            {/* //all items in stock */}
 
                         </div>
 
                         {
-                            product?.available && product?.category === "tee" || false ? 
+                            product?.available && product?.category === "tee" ? 
                             <div className="flex flex-col gap-2 pb-12">
                                 <p className="uppercase text-[#989898]">size</p>
                                 <div className="flex md:gap-6 gap-3 items-center">
@@ -115,54 +115,57 @@ export default function ProductPage() {
             
                         <div ref={ref2} className="flex flex-col gap-4 pb-2 w-full">
                             {
-                            product?.available || false ?
-                            cart?.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
-                            <button 
-                                className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
-                                onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { size: product?.category === "tee" ? selectedSize : "" }}) }
-                            >
-                                add to cart
-                            </button>
-                            :
-                            <div className="flex justify-between text-[20px] items-center gap-1">
-                                <button 
-                                    className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg" 
-                                    onClick={() => changeQuantity(product?.id || "", "ADD")}
-                                >
-                                    +
-                                </button>
+                            product?.available ?
+                            // cart?.map((item: ICart) => item.id).indexOf(product?.id || "") === -1 ? 
+                            // <button 
+                            //     className={`cursor-pointer border border-[#000] hover:bg-black hover:text-white p-6 py-4 rounded-lg uppercase duration-700 delay-50 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
+                            //     onClick={() => addToCart({id: product?.id || "0", quantity: 1, variation: { size: product?.category === "tee" ? selectedSize : "" }}) }
+                            // >
+                            //     add to cart
+                            // </button>
+                            // :
+                            // <div className="flex justify-between text-[20px] items-center gap-1">
+                            //     <button 
+                            //         className="h-[50px] w-[100px] border border-black cursor-pointer rounded-lg" 
+                            //         onClick={() => changeQuantity(product?.id || "", "ADD")}
+                            //     >
+                            //         +
+                            //     </button>
 
-                                <input 
-                                    className="w-[40px] py-2 text-center" 
-                                    type="number" 
-                                    value={cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString()} 
-                                    onChange={(e) => changeQuantity(product?.id, +e.target.value)} 
-                                />
-                                <button 
-                                    className="h-[50px] w-[100px] text-[20px] border border-black cursor-pointer rounded-lg" 
-                                    onClick={() => cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString() === "1" 
-                                    ? removeFromCart(product?.id) : changeQuantity(product?.id || "", "MINUS")
-                                }>
-                                -
-                                </button>
-                            </div> 
+                            //     <input 
+                            //         className="w-[40px] py-2 text-center" 
+                            //         type="number" 
+                            //         value={cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString()} 
+                            //         onChange={(e) => changeQuantity(product?.id, +e.target.value)} 
+                            //     />
+                            //     <button 
+                            //         className="h-[50px] w-[100px] text-[20px] border border-black cursor-pointer rounded-lg" 
+                            //         onClick={() => cart?.filter((item: ICart) => item.id === product?.id).map((item: ICart) => item.quantity).toString() === "1" 
+                            //         ? removeFromCart(product?.id) : changeQuantity(product?.id || "", "MINUS")
+                            //     }>
+                            //     -
+                            //     </button>
+                            // </div> 
+                            <p className="border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-center text-white p-6 py-4 rounded-lg uppercase">
+                                Sold out
+                            </p>
                             :
                             <p className="border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-center text-white p-6 py-4 rounded-lg uppercase">
-                                {/* Coming soon */}
-                                Sold out
+                                Coming soon
                             </p>
                             }
                             {
-                            product?.available || false ? 
-                            <button 
-                                className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
-                                onClick={cart?.find(element => element.id === product?.id) ? () => setOpenCart(true) : () => { 
-                                    addToCart({id: product?.id || "0", quantity: 1, variation: {size: selectedSize }});
-                                    setOpenCart(true)} 
-                                }
-                            >
-                                Buy now
-                            </button>
+                            product?.available ? 
+                            <></>
+                            // <button 
+                            //     className={`cursor-pointer border border-[#C22026] hover:bg-[#a21010] bg-[#C22026] text-white p-6 py-4 rounded-lg uppercase delay-100 duration-700 ${isVisible2 ? "opacity-[1]" : "opacity-[0]"}`} 
+                            //     onClick={cart?.find(element => element.id === product?.id) ? () => setOpenCart(true) : () => { 
+                            //         addToCart({id: product?.id || "0", quantity: 1, variation: {size: selectedSize }});
+                            //         setOpenCart(true)} 
+                            //     }
+                            // >
+                            //     Buy now
+                            // </button>
                             :
                             ""
                             }
